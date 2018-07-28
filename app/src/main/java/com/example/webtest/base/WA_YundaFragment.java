@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -72,13 +70,15 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 	public Handler handler = new Handler();
 
+	//人气
 	protected void goSearchClick() {
-
-//		listWeb.loadUrl("wwww.baidu.com");
-//		listWeb.loadUrl(urls[0]);
-		loadMyUrl(urls[0]);
-//		listWeb.loadUrl("https://s.taobao.com/search?q=%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9%E5%A5%B3%E7%94%9F&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20180725&ie=utf8");
-//		handlerJs("goSearchClick();");
+		loadMyUrl(listWeb.getUrl()+"&sort=renqi");
+        goSearch(shops[index]);
+	}
+	//销量
+	protected void saleDesc() {
+		loadMyUrl(listWeb.getUrl()+"&sort=sale-desc");
+        goSearch(shops[index]);
 	}
 	protected void goSearchWord() {
 
@@ -93,12 +93,13 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 		handlerJs("goGetChecked();");
 	}
-	protected void check() {
+	protected void check(String url) {
 
-		handlerJs("check();");
+//		handlerJs("check();");
+		handlerJs("check(\"" + url + "\");");
 	}
 
-	protected void goSearch(final String search,int randomtime) {
+	protected void goSearch(final String search) {
 //		handlerJs("setSearchWord(\""+search+"\",\""+randomtime+"\");");
 		handlerJs("setSearchWord(\"" + search + "\");");
 	}
@@ -125,13 +126,13 @@ public class WA_YundaFragment extends WA_BaseFragment
 		},time);
 	}
 
-	public void handlerActionDelay(final String url,int time) {
+	public void handlerActionDelay(final String url, final String lastUrl, int time) {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				loadMyUrl(url);
+                check(lastUrl);
 				//TODO
-				check();
 
 			}
 		},time);
@@ -491,7 +492,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 			index++;
 			randomtime =3000+(int)(Math.random()*2000);		//返回大于等于m小于m+n（不包括m+n）之间的随机数
 			if (index<shops.length){
-				goSearch(shops[index],randomtime);
+				goSearch(shops[index]);
 			}
 
 		}
@@ -558,6 +559,23 @@ public class WA_YundaFragment extends WA_BaseFragment
 			handlerJs("operaSearch();");
 		}
 
+		@JavascriptInterface
+		public void sameResult(String resultStr) throws IOException
+		{
+            if (index == 0) {
+                LogUtil.e("------------resultStr------------" + shops[index] + "\n" + resultStr);
+            } else {
+                LogUtil.e("------------resultStr------------" + shops[index-1] + "\n" + resultStr);
+            }
+		}
+
+
+		@JavascriptInterface
+		public void afterSearch() throws IOException
+		{
+			handlerJs("relativeTitle();",2000);
+		}
+
 
 		@JavascriptInterface
 		public void linkArray(final String[] array) throws IOException
@@ -577,14 +595,29 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 	//TODO
 	private void getSameStytleResult(String[] linkUrls) {
+		String lastUrl = "";
+        ArrayList<String> urlList = new ArrayList<String>();
+        for (int i = 0; i < linkUrls.length; i++) {
 
-		for (int i = 0; i < linkUrls.length; i++) {
-//		for (int i = 0; i < 20; i++) {
-			if (linkUrls[i].contains("taobao.com")&&!sameUlrs.contains(linkUrls[i])) {
-				handlerActionDelay(linkUrls[i],3000*i);
-				sameUlrs = sameUlrs + "------" + linkUrls[i];
+            if (linkUrls[i].contains("taobao.com")&&!sameUlrs.contains(linkUrls[i])) {
+                urlList.add(linkUrls[i]);
+            }
+
+        }
+
+		for (int i = 0; i < urlList.size(); i++) {
+//		for (int i = 0; i < 3; i++) {
+			if (urlList.get(i).contains("taobao.com")&&!sameUlrs.contains(urlList.get(i))) {
+				if (i > 0) {
+					lastUrl = urlList.get(i - 1);
+				} else {
+					lastUrl = urlList.get(0);
+				}
+				handlerActionDelay(urlList.get(i),lastUrl,3000*i);
+				sameUlrs = sameUlrs + "------" + urlList.get(i);
 			}
 		}
+//		LogUtil.e("resultStr-----------end");
 
 	}
 

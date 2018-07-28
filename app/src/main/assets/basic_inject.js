@@ -62,7 +62,7 @@ function goSearchClick(){
 }
 
 
-function check(){
+function check(url){
 
     var itemnames = document.getElementsByClassName("info1__itemname");
     var prices = document.getElementsByClassName("info2__price");
@@ -75,13 +75,15 @@ function check(){
 //        text = text + "itemnames:"+itemnames[i]+",prices:"+prices[i]+",paids:"+paids[i]+ "\n";
 //    }
     var pay = paids[7].innerText.replace("人付款","");
+    var text = url + "\n";
     if(paids.length>30&&pay>2){
         for(var i=0;i<itemnames.length;i++){
             if(paids[i].innerText.replace("人付款","")>10){
-                localMethod.JI_LOG("itemnames:"+itemnames[i].innerText +",paids:"+paids[i].innerText);
+                text = text + itemnames[i].innerText +"#####"+paids[i].innerText + "\n";
             }
         }
-        localMethod.JI_LOG("^^^^^^^^_______^^^^^^^"+itemnames[7].innerText);
+//        text = text + url;
+        localMethod.sameResult(text);
     }
 
 //
@@ -128,11 +130,9 @@ function setSearchWord(shopword){
 
             var btnSearch = document.getElementsByClassName("submit icon-btn-search");
             btnSearch[0].click();
-//    setTimeout(function(){
-//
-////            setTimeout(function(){localMethod.getTargetIndex();},2000);
-//
-//    },2000);
+
+
+//    localMethod.afterSearch();
 }
 
 //打印同款链接

@@ -15,12 +15,6 @@
             android:layout_height="wrap_content"
             android:text="刷新" />
 
-        <Button
-            android:id="@+id/btn_gosearch"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="市场" />
 
         <Button
             android:id="@+id/btn_check"
@@ -28,25 +22,34 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="检测" />
+
+
         <Button
-            android:id="@+id/btn_biao1"
+            android:id="@+id/btn_gosearch"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="标题" />
+            android:text="人气" />
+
         <Button
-            android:id="@+id/btn_str_result"
+            android:id="@+id/btn_getchecked"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="结果" />
+            android:text="销量" />
 
         <Button
             android:id="@+id/btn_search"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="go" />
+            android:text="搜索" />
+        <Button
+            android:id="@+id/btn_biao1"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="同款" />
 
     </LinearLayout>
     <LinearLayout
@@ -54,6 +57,13 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_str_result"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="结果" />
         <Button
             android:id="@+id/btn_gosearchworld"
             android:layout_weight="1"
@@ -61,12 +71,6 @@
             android:layout_height="wrap_content"
             android:text="标2" />
 
-        <Button
-            android:id="@+id/btn_getchecked"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="要选" />
 
         <Button
             android:layout_weight="1"

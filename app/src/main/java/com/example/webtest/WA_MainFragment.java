@@ -2,17 +2,14 @@ package com.example.webtest;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -214,8 +211,13 @@ public class WA_MainFragment extends WA_YundaFragment
 			@Override
 			public void onClick(View view) {
 				TAOBAO = shops[0];
-				goSearch(shops[index],randomtime);
-                index++;
+				if (index == shops.length) {
+					index = 0;
+				}
+				goSearch(shops[index]);
+				if (index<shops.length){
+					index++;
+				}
 			}
 		});
 		btnGosearch.setOnClickListener(new View.OnClickListener() {
@@ -233,13 +235,14 @@ public class WA_MainFragment extends WA_YundaFragment
 		btnGetchecked.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				goGetChecked();
+//				goGetChecked();
+				saleDesc();
 			}
 		});
 		btn_check.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				check();
+				saleDesc();
 			}
 		});
 		btn_biao1.setOnClickListener(new View.OnClickListener() {
