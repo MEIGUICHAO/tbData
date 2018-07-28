@@ -495,7 +495,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 			Log.e(TAG, "--------------------title----------------------------");
 			sortTitleMap(titleMap,"---------------------title---------------------------"+shops[index]+"\n");
 			titleMap.clear();
-			index++;
+//			index++;
 			randomtime =3000+(int)(Math.random()*2000);		//返回大于等于m小于m+n（不包括m+n）之间的随机数
 			if (index<shops.length){
 				goSearch(shops[index]);
@@ -622,8 +622,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 
         }
 
-//		for (int i = 0; i < urlList.size(); i++) {
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < urlList.size(); i++) {
+//		for (int i = 0; i < 6; i++) {
 			if (urlList.get(i).contains("taobao.com")&&!sameUlrs.contains(urlList.get(i))) {
 				if (i > 0) {
 					lastUrl = urlList.get(i - 1);

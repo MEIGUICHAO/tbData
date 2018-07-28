@@ -25,6 +25,7 @@ import com.example.webtest.io.SharedPreferencesUtils;
 import com.example.webtest.io.WA_Parameters;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @desc 自动化Fragment主调页面
@@ -217,7 +218,16 @@ public class WA_MainFragment extends WA_YundaFragment
 		btnRefresh.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				listWeb.reload();
+
+				if (index == shops.length) {
+					index = 0;
+				}
+
+				if (index<shops.length){
+					index++;
+				}
+				btnRefresh.setText(index+'/'+shops.length);
+//				listWeb.reload();
 			}
 		});
 		btnBack.setOnClickListener(new View.OnClickListener() {
@@ -230,13 +240,8 @@ public class WA_MainFragment extends WA_YundaFragment
 			@Override
 			public void onClick(View view) {
 				TAOBAO = shops[0];
-				if (index == shops.length) {
-					index = 0;
-				}
 				goSearch(shops[index]);
-				if (index<shops.length){
-					index++;
-				}
+				sameUlrs = "";
 			}
 		});
 		btnGosearch.setOnClickListener(new View.OnClickListener() {
@@ -321,8 +326,14 @@ public class WA_MainFragment extends WA_YundaFragment
 		btn_reset.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mTitleList.clear();
+				if (null != titleList) {
+					titleList.clear();
+				}
+				if (null != mTitleList) {
+					mTitleList.clear();
+				}
 				mTitleStr = "";
+				titleIdex = 0;
 			}
 		});
 		btn_title_out.setOnClickListener(new View.OnClickListener() {
@@ -444,6 +455,34 @@ public class WA_MainFragment extends WA_YundaFragment
 		{
 			super.onPageStarted(view, url, favicon);
 		}
+	}
+
+	public int[] randomArray(){
+		int max = mTitleList.size() - 1;
+		int len = max - 0 + 1;
+
+		if(max < 0 || 30 > len){
+			return null;
+		}
+
+		//初始化给定范围的待选数组
+		int[] source = new int[len];
+		for (int i = 0; i < 0+len; i++){
+			source[i-0] = i;
+		}
+
+		int[] result = new int[30];
+		Random rd = new Random();
+		int index = 0;
+		for (int i = 0; i < result.length; i++) {
+			//待选数组0到(len-2)随机一个下标
+			index = Math.abs(rd.nextInt() % len--);
+			//将随机到的数放入结果集
+			result[i] = source[index];
+			//将待选数组中被随机到的数，用待选数组(len-1)下标对应的数替换
+			source[index] = source[len];
+		}
+		return result;
 	}
 
 }
