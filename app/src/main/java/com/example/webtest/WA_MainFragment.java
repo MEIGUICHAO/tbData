@@ -40,7 +40,7 @@ public class WA_MainFragment extends WA_YundaFragment
 	private LocalMethod mLocalMethod;
 	private WA_Parameters parameter;
 	private String injectJS;
-	private ArrayList<String> mTitleList;
+	private ArrayList<String> mTitleList = new ArrayList<String>();
 	private TextView tv_title;
 	private String mTitleStr = "---";
 	private Button btn_keyword_split, btn_title_result;
@@ -233,7 +233,7 @@ public class WA_MainFragment extends WA_YundaFragment
 				if (index<shops.length){
 					index++;
 				}
-				btnRefresh.setText(index+'/'+shops.length);
+				btnRefresh.setText(index + "/" + shops.length);
 //				listWeb.reload();
 			}
 		});
@@ -281,13 +281,11 @@ public class WA_MainFragment extends WA_YundaFragment
 		btn_process.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (titleIdex + 1 == titleList.size()) {
-					titleIdex = 0;
-				} else {
-					titleIdex++;
+				try {
+					getProcess();
+				} catch (Exception e) {
+
 				}
-				btn_process.setText(titleIdex + "/" + titleList.size());
-				etShow();
 			}
 		});
 		btn_et_displays.setOnClickListener(new View.OnClickListener() {
@@ -304,30 +302,11 @@ public class WA_MainFragment extends WA_YundaFragment
 		btn_repeat_out.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String titles = et_title.getText().toString();
-				String[] split = titles.split("#");
-//				String testStr = "jfdlskjfkdlsjfldksjf123ouiouiou";
-//				testStr = testStr.replace(testStr, "123");
-//				LogUtil.e(testStr);
-				titles = "";
-				if (null == mTitleList) {
-					mTitleList = new ArrayList<String>();
-				}
-				for (int i = 0; i < split.length; i++) {
-					if (!mTitleStr.contains(split[i])) {
-						mTitleStr = mTitleStr + "#" +split[i];
-						mTitleList.add(split[i]);
-					}
-					for (int j = 0; j < titleList.size(); j++) {
-						String replace = titleList.get(j).replace(split[i], "");
-						titleList.remove(j);
-						titleList.add(j,replace);
-						titles = titles + j + "、" + replace + "\n";
-
-					}
+				try {
+					repeatOut();
+				} catch (Exception e) {
 
 				}
-				tv_title.setText(titles);
 			}
 		});
 		btn_reset.setOnClickListener(new View.OnClickListener() {
@@ -407,51 +386,12 @@ public class WA_MainFragment extends WA_YundaFragment
 		btn_title_result.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				int time = titleCount / shopCount;
-				outputTitleList = new ArrayList<String>();
-				String templeStr = "";
-				if (null != keywordSplit) {
-					for (int h = 0; h < keywordSplit.length; h++) {
-						for (int i = 0; i < time; i++) {
-							int[] ints = randomArray();
-							Random rand = new Random();
-							int num = rand.nextInt(); //int范围类的随机数
-							num = rand.nextInt(15); //生成0-100以内的随机数
-							num = (int)(Math.random() * 15); //0-100以内的随机数，用Matn.random()方式
-							ArrayList<String> titleResult = new ArrayList<String>();
-							for (int j = 0; j < ints.length; j++) {
-								titleResult.add(mTitleList.get(ints[j]));
-							}
-							titleResult.add(num,keywordSplit[h]);
-							templeStr = "";
-
-							for (int j = 0; j < titleResult.size(); j++) {
-								if (strLength(templeStr) < 120) {
-									templeStr = templeStr + titleResult.get(j);
-								} else {
-									break;
-								}
-							}
-							outputTitleList.add(templeStr);
-						}
-					}
-
-
+				try {
+					getTitleResutl();
+				} catch (Exception e) {
+					LogUtil.e(e.toString());
 				}
-//				new ArrayList<String[]>()
-				String result1 = "";
-				String result2 = "";
-				String result3 = "";
-				String result4 = "";
-				String result5 = "";
-				String result = "";
-				for (int i = 0; i < outputTitleList.size(); i++) {
-					result = result + outputTitleList.get(i) + "\n";
-					if (i % time == 0) {
-						result = result + "-------------------------" + "\n";
-					}
-				}
-				LogUtil.e("\n"+result);
+
 
 			}
 		});
@@ -489,6 +429,94 @@ public class WA_MainFragment extends WA_YundaFragment
 //				}.start();
 //			}
 //		});
+	}
+
+	private void getProcess() {
+		if (titleIdex + 1 == titleList.size()) {
+            titleIdex = 0;
+        } else {
+            titleIdex++;
+        }
+		btn_process.setText(titleIdex + "/" + titleList.size());
+		etShow();
+	}
+
+	private void repeatOut() {
+		String titles = et_title.getText().toString();
+		String[] split = titles.split("#");
+//				String testStr = "jfdlskjfkdlsjfldksjf123ouiouiou";
+//				testStr = testStr.replace(testStr, "123");
+//				LogUtil.e(testStr);
+		titles = "";
+		if (null == mTitleList) {
+            mTitleList = new ArrayList<String>();
+        }
+		for (int i = 0; i < split.length; i++) {
+            if (!mTitleStr.contains(split[i])) {
+                mTitleStr = mTitleStr + "#" +split[i];
+                mTitleList.add(split[i]);
+            }
+            for (int j = 0; j < titleList.size(); j++) {
+                String replace = titleList.get(j).replace(split[i], "");
+                titleList.remove(j);
+                titleList.add(j,replace);
+                titles = titles + j + "、" + replace + "\n";
+
+            }
+
+        }
+		tv_title.setText(titles);
+	}
+
+	private void getTitleResutl() {
+
+		int time = titleCount / shopCount;
+		outputTitleList = new ArrayList<String>();
+		String templeStr = "";
+		if (null != keywordSplit) {
+			for (int h = 0; h < keywordSplit.length; h++) {
+				for (int i = 0; i < time; i++) {
+					int[] ints = randomArray();
+					Random rand = new Random();
+					int num = rand.nextInt(); //int范围类的随机数
+					num = rand.nextInt(15); //生成0-100以内的随机数
+					num = (int)(Math.random() * 15); //0-100以内的随机数，用Matn.random()方式
+					ArrayList<String> titleResult = new ArrayList<String>();
+					for (int j = 0; j < ints.length; j++) {
+						if (!keywordSplit[h].contains(mTitleList.get(ints[j]))) {
+							titleResult.add(mTitleList.get(ints[j]));
+						}
+					}
+					titleResult.add(num,keywordSplit[h]);
+					templeStr = "";
+
+					for (int j = 0; j < titleResult.size(); j++) {
+						if (strLength(templeStr) < 100) {
+							templeStr = templeStr + titleResult.get(j);
+						} else {
+							break;
+						}
+					}
+					outputTitleList.add(templeStr);
+				}
+			}
+
+
+		}
+//				new ArrayList<String[]>()
+		String result1 = "";
+		String result2 = "";
+		String result3 = "";
+		String result4 = "";
+		String result5 = "";
+		String result = ""+"\n";
+		for (int i = 0; i < outputTitleList.size(); i++) {
+			result = result + outputTitleList.get(i) + "\n";
+			if (i % time == 0 && i != 0) {
+				result = result + "-------------------------" + "\n";
+			}
+		}
+		LogUtil.e(result);
 	}
 
 	public int strLength(String value) {
