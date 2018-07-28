@@ -43,6 +43,11 @@ public class WA_MainFragment extends WA_YundaFragment
 	private ArrayList<String> mTitleList;
 	private TextView tv_title;
 	private String mTitleStr = "---";
+	private Button btn_keyword_split, btn_title_result;
+	private String[] keywordSplit;
+	private int titleCount;
+	private int shopCount;
+	private ArrayList<String> outputTitleList;
 
 	/**  通过静态方法实例化自动化Fragment*/
 	public static void start(Activity mContext, int containerRsID, WA_Parameters parameter)
@@ -105,6 +110,8 @@ public class WA_MainFragment extends WA_YundaFragment
 		btn_title_out = (Button) view.findViewById(R.id.btn_title_out);
 		btn_process = (Button) view.findViewById(R.id.btn_process);
 		btn_reset = (Button) view.findViewById(R.id.btn_reset);
+		btn_keyword_split = (Button) view.findViewById(R.id.btn_keyword_split);
+		btn_title_result = (Button) view.findViewById(R.id.btn_title_result);
 		ll_title = (LinearLayout) view.findViewById(R.id.ll_title);
         et_title = (EditText) view.findViewById(R.id.et_title);
 		tv_title = (TextView) view.findViewById(R.id.tv_title);
@@ -343,7 +350,7 @@ public class WA_MainFragment extends WA_YundaFragment
 				for (int i = 0; i < mTitleList.size(); i++) {
 					str = str + mTitleList.get(i) + "\n";
 				}
-				LogUtil.e(str);
+				LogUtil.e("-------titleSize-------:" + mTitleList.size() + "\n" + str);
 			}
 		});
 		btn_check.setOnClickListener(new View.OnClickListener() {
@@ -375,6 +382,76 @@ public class WA_MainFragment extends WA_YundaFragment
 					Log.e("rcstr!!! ",rcstr );
 					Log.e("titlestr!!! ",titlestr );
 				}
+
+			}
+		});
+		btn_keyword_split.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+
+					String etString = et_title.getText().toString();
+					String[] part = etString.split("##");
+					keywordSplit = part[0].split("#");
+					String[] titleShop = part[1].split("#");
+					titleCount = Integer.parseInt(titleShop[0]);
+					shopCount = Integer.parseInt(titleShop[1]);
+					LogUtil.e("etString:" + etString + ",keywordSplit_size:" + keywordSplit.length + ",titleCount:" + titleCount
+							+ ",shopCount:" + shopCount);
+				} catch (Exception e) {
+					LogUtil.e(e.toString());
+
+				}
+			}
+		});
+		btn_title_result.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int time = titleCount / shopCount;
+				outputTitleList = new ArrayList<String>();
+				String templeStr = "";
+				if (null != keywordSplit) {
+					for (int h = 0; h < keywordSplit.length; h++) {
+						for (int i = 0; i < time; i++) {
+							int[] ints = randomArray();
+							Random rand = new Random();
+							int num = rand.nextInt(); //int范围类的随机数
+							num = rand.nextInt(15); //生成0-100以内的随机数
+							num = (int)(Math.random() * 15); //0-100以内的随机数，用Matn.random()方式
+							ArrayList<String> titleResult = new ArrayList<String>();
+							for (int j = 0; j < ints.length; j++) {
+								titleResult.add(mTitleList.get(ints[j]));
+							}
+							titleResult.add(num,keywordSplit[h]);
+							templeStr = "";
+
+							for (int j = 0; j < titleResult.size(); j++) {
+								if (strLength(templeStr) < 120) {
+									templeStr = templeStr + titleResult.get(j);
+								} else {
+									break;
+								}
+							}
+							outputTitleList.add(templeStr);
+						}
+					}
+
+
+				}
+//				new ArrayList<String[]>()
+				String result1 = "";
+				String result2 = "";
+				String result3 = "";
+				String result4 = "";
+				String result5 = "";
+				String result = "";
+				for (int i = 0; i < outputTitleList.size(); i++) {
+					result = result + outputTitleList.get(i) + "\n";
+					if (i % time == 0) {
+						result = result + "-------------------------" + "\n";
+					}
+				}
+				LogUtil.e("\n"+result);
 
 			}
 		});
@@ -414,11 +491,34 @@ public class WA_MainFragment extends WA_YundaFragment
 //		});
 	}
 
+	public int strLength(String value) {
+		int valueLength = 0;
+		String chinese = "[\u0391-\uFFE5]";
+		/* 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1 */
+		for (int i = 0; i < value.length(); i++) {
+			/* 获取一个字符 */
+			String temp = value.substring(i, i + 1);
+			/* 判断是否为中文字符 */
+			if (temp.matches(chinese)) {
+				/* 中文字符长度为2 */
+				valueLength += 2;
+			} else {
+				/* 其他字符长度为1 */
+				valueLength += 1;
+			}
+		}
+		return valueLength;
+	}
+
 	private void etShow() {
-		btn_process.setText(titleIdex + "/" + titleList.size());
-		if (titleList.size() > 0) {
-            et_title.setText(titleList.get(titleIdex));
-        }
+		try {
+			btn_process.setText(titleIdex + "/" + titleList.size());
+			if (titleList.size() > 0) {
+				et_title.setText(titleList.get(titleIdex));
+			}
+		} catch (Exception e) {
+
+		}
 	}
 
 	/** ListWebView加载完注入基本JS函数 */
@@ -458,10 +558,11 @@ public class WA_MainFragment extends WA_YundaFragment
 	}
 
 	public int[] randomArray(){
+		int splitNum = 30;
 		int max = mTitleList.size() - 1;
 		int len = max - 0 + 1;
 
-		if(max < 0 || 30 > len){
+		if(max < 0 || splitNum > len){
 			return null;
 		}
 
@@ -471,7 +572,8 @@ public class WA_MainFragment extends WA_YundaFragment
 			source[i-0] = i;
 		}
 
-		int[] result = new int[30];
+		int[] result = new int[splitNum];
+
 		Random rd = new Random();
 		int index = 0;
 		for (int i = 0; i < result.length; i++) {

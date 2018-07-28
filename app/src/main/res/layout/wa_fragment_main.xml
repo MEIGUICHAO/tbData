@@ -111,7 +111,6 @@
 
     <LinearLayout
         android:id="@+id/ll_title"
-        android:visibility="gone"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -144,6 +143,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="结果" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn_keyword_split"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="词根" />
+            <Button
+                android:id="@+id/btn_title_result"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="标题" />
             <Button
                 android:id="@+id/btn_process"
                 android:layout_weight="1"

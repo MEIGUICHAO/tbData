@@ -622,8 +622,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 
         }
 
-		for (int i = 0; i < urlList.size(); i++) {
-//		for (int i = 0; i < 6; i++) {
+//		for (int i = 0; i < urlList.size(); i++) {
+		for (int i = 0; i < 10; i++) {
 			if (urlList.get(i).contains("taobao.com")&&!sameUlrs.contains(urlList.get(i))) {
 				if (i > 0) {
 					lastUrl = urlList.get(i - 1);
