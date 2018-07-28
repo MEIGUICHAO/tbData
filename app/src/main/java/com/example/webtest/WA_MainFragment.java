@@ -473,6 +473,12 @@ public class WA_MainFragment extends WA_YundaFragment
 		int time = titleCount / shopCount;
 		outputTitleList = new ArrayList<String>();
 		String templeStr = "";
+
+		String result1 = "";
+		String result2 = "";
+		String result3 = "";
+		String result4 = "";
+		String result5 = "";
 		if (null != keywordSplit) {
 			for (int h = 0; h < keywordSplit.length; h++) {
 				for (int i = 0; i < time; i++) {
@@ -498,25 +504,65 @@ public class WA_MainFragment extends WA_YundaFragment
 						}
 					}
 					outputTitleList.add(templeStr);
+					switch (i) {
+						case 0:
+						case 5:
+						case 10:
+						case 15:
+						case 20:
+							result1 = result1 + templeStr + "\n";
+							break;
+						case 1:
+						case 6:
+						case 11:
+						case 16:
+						case 21:
+							result2 = result2 + templeStr + "\n";
+							break;
+						case 2:
+						case 7:
+						case 12:
+						case 17:
+						case 22:
+							result3 = result3 + templeStr + "\n";
+							break;
+						case 3:
+						case 8:
+						case 13:
+						case 18:
+						case 23:
+							result4 = result4 + templeStr + "\n";
+							break;
+						case 4:
+						case 9:
+						case 14:
+						case 19:
+						case 24:
+							result5 = result5 + templeStr + "\n";
+							break;
+					}
 				}
 			}
 
 
 		}
 //				new ArrayList<String[]>()
-		String result1 = "";
-		String result2 = "";
-		String result3 = "";
-		String result4 = "";
-		String result5 = "";
-		String result = ""+"\n";
+		String result = "-------------------------"+"\n";
 		for (int i = 0; i < outputTitleList.size(); i++) {
 			result = result + outputTitleList.get(i) + "\n";
-			if (i % time == 0 && i != 0) {
-				result = result + "-------------------------" + "\n";
-			}
 		}
 		LogUtil.e(result);
+
+		LogUtil.e("------------result------------1");
+		LogUtil.e(result1);
+		LogUtil.e("------------result------------2");
+		LogUtil.e(result2);
+		LogUtil.e("------------result------------3");
+		LogUtil.e(result3);
+		LogUtil.e("------------result------------4");
+		LogUtil.e(result4);
+		LogUtil.e("------------result------------5");
+		LogUtil.e(result5);
 	}
 
 	public int strLength(String value) {
