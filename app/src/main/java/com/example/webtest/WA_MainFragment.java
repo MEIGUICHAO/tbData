@@ -14,11 +14,17 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.webtest.base.MyWebView;
 import com.example.webtest.base.WA_YundaFragment;
+import com.example.webtest.io.LogUtil;
 import com.example.webtest.io.SharedPreferencesUtils;
 import com.example.webtest.io.WA_Parameters;
+
+import java.util.ArrayList;
 
 /**
  * @desc 自动化Fragment主调页面
@@ -33,6 +39,9 @@ public class WA_MainFragment extends WA_YundaFragment
 	private LocalMethod mLocalMethod;
 	private WA_Parameters parameter;
 	private String injectJS;
+	private ArrayList<String> mTitleList;
+	private TextView tv_title;
+	private String mTitleStr = "---";
 
 	/**  通过静态方法实例化自动化Fragment*/
 	public static void start(Activity mContext, int containerRsID, WA_Parameters parameter)
@@ -88,6 +97,16 @@ public class WA_MainFragment extends WA_YundaFragment
 		btn_check = (Button) view.findViewById(R.id.btn_check);
 		btn_biao1 = (Button) view.findViewById(R.id.btn_biao1);
 		btn_str_result = (Button) view.findViewById(R.id.btn_str_result);
+
+		btn_display = (Button) view.findViewById(R.id.btn_display);
+		btn_et_displays = (Button) view.findViewById(R.id.btn_et_displays);
+		btn_repeat_out = (Button) view.findViewById(R.id.btn_repeat_out);
+		btn_title_out = (Button) view.findViewById(R.id.btn_title_out);
+		btn_process = (Button) view.findViewById(R.id.btn_process);
+		btn_reset = (Button) view.findViewById(R.id.btn_reset);
+		ll_title = (LinearLayout) view.findViewById(R.id.ll_title);
+        et_title = (EditText) view.findViewById(R.id.et_title);
+		tv_title = (TextView) view.findViewById(R.id.tv_title);
 	}
 
 	/** 初始化两个不同功用的WebView */
@@ -239,6 +258,83 @@ public class WA_MainFragment extends WA_YundaFragment
 				saleDesc();
 			}
 		});
+		btn_display.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				etShow();
+
+			}
+		});
+		btn_process.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (titleIdex + 1 == titleList.size()) {
+					titleIdex = 0;
+				} else {
+					titleIdex++;
+				}
+				btn_process.setText(titleIdex + "/" + titleList.size());
+				etShow();
+			}
+		});
+		btn_et_displays.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (ll_title.getVisibility() == View.VISIBLE) {
+					ll_title.setVisibility(View.GONE);
+				} else {
+					ll_title.setVisibility(View.VISIBLE);
+				}
+
+			}
+		});
+		btn_repeat_out.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String titles = et_title.getText().toString();
+				String[] split = titles.split("#");
+//				String testStr = "jfdlskjfkdlsjfldksjf123ouiouiou";
+//				testStr = testStr.replace(testStr, "123");
+//				LogUtil.e(testStr);
+				titles = "";
+				if (null == mTitleList) {
+					mTitleList = new ArrayList<String>();
+				}
+				for (int i = 0; i < split.length; i++) {
+					if (!mTitleStr.contains(split[i])) {
+						mTitleStr = mTitleStr + "#" +split[i];
+						mTitleList.add(split[i]);
+					}
+					for (int j = 0; j < titleList.size(); j++) {
+						String replace = titleList.get(j).replace(split[i], "");
+						titleList.remove(j);
+						titleList.add(j,replace);
+						titles = titles + j + "、" + replace + "\n";
+
+					}
+
+				}
+				tv_title.setText(titles);
+			}
+		});
+		btn_reset.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mTitleList.clear();
+				mTitleStr = "";
+			}
+		});
+		btn_title_out.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String str = "";
+				for (int i = 0; i < mTitleList.size(); i++) {
+					str = str + mTitleList.get(i) + "\n";
+				}
+				LogUtil.e(str);
+			}
+		});
 		btn_check.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -305,6 +401,13 @@ public class WA_MainFragment extends WA_YundaFragment
 //				}.start();
 //			}
 //		});
+	}
+
+	private void etShow() {
+		btn_process.setText(titleIdex + "/" + titleList.size());
+		if (titleList.size() > 0) {
+            et_title.setText(titleList.get(titleIdex));
+        }
 	}
 
 	/** ListWebView加载完注入基本JS函数 */

@@ -8,6 +8,8 @@ import android.view.KeyEvent;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.webtest.io.LogUtil;
@@ -42,6 +44,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected String[] shops;
 	protected String[] urls;
 	protected int index = 0;
+	protected int titleIdex = 0;
 	protected int randomtime = 1000;
 	protected String resultStr = "";
 	protected String rcresultStr = "";
@@ -57,10 +60,13 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected Button btnGosearch;
 	protected Button btnGosearchworld;
 	protected Button btnGetchecked,btn_check,btn_biao1;
-	protected Button btn_str_result;
+	protected Button btn_str_result,btn_display,btn_repeat_out,btn_et_displays,btn_reset,btn_process,btn_title_out;
+	protected LinearLayout ll_title;
+	protected EditText et_title;
 
 	protected String Url = "https://s.taobao.com/search?q=%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9%E5%A5%B3%E7%94%9F&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20180725&ie=utf8";
-	private String sameUlrs = "";
+	protected String sameUlrs = "";
+	protected ArrayList<String> titleList;
 
 
 	protected enum SearchType
@@ -578,6 +584,17 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 
 		@JavascriptInterface
+		public void titleSave(String str) throws IOException
+		{
+			if (null == titleList) {
+				titleList = new ArrayList<String>();
+			}
+			titleList.add(str);
+
+		}
+
+
+		@JavascriptInterface
 		public void linkArray(final String[] array) throws IOException
 		{
 			LogUtil.e("length:" + array.length + "");
@@ -605,8 +622,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 
         }
 
-		for (int i = 0; i < urlList.size(); i++) {
-//		for (int i = 0; i < 3; i++) {
+//		for (int i = 0; i < urlList.size(); i++) {
+		for (int i = 0; i < 6; i++) {
 			if (urlList.get(i).contains("taobao.com")&&!sameUlrs.contains(urlList.get(i))) {
 				if (i > 0) {
 					lastUrl = urlList.get(i - 1);

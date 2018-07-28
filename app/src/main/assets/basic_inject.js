@@ -79,6 +79,7 @@ function check(url){
     if(paids.length>30&&pay>2){
         for(var i=0;i<itemnames.length;i++){
             if(paids[i].innerText.replace("人付款","")>10){
+                localMethod.titleSave(itemnames[i].innerText);
                 text = text + itemnames[i].innerText +"#####"+paids[i].innerText + "\n";
             }
         }
