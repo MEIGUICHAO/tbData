@@ -568,11 +568,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 		@JavascriptInterface
 		public void sameResult(String resultStr) throws IOException
 		{
-            if (index == 0) {
-                LogUtil.e("------------resultStr------------" + shops[index] + "\n" + resultStr);
-            } else {
-                LogUtil.e("------------resultStr------------" + shops[index-1] + "\n" + resultStr);
-            }
+			LogUtil.e("------------resultStr------------" + shops[index] + "\n" + resultStr);
+
 		}
 
 
