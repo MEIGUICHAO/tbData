@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +33,7 @@ import java.util.Random;
  * @desc 自动化Fragment主调页面
  * @author z.h
  */
-public class WA_MainFragment extends WA_YundaFragment
-{
+public class WA_MainFragment extends WA_YundaFragment implements View.OnClickListener {
 	private static final String ARG_CODE = "WebAutoFragment";
 	private static final String BASIC_JS_PATH = "basic_inject.js";
 	private static final String LOGIC_JS_PATH = "logic_inject.js";
@@ -48,6 +49,9 @@ public class WA_MainFragment extends WA_YundaFragment
 	private int titleCount;
 	private int shopCount;
 	private ArrayList<String> outputTitleList;
+	private Button btn_sort_result;
+	private Button btn_sort_title;
+	private EditText et_index;
 
 	/**  通过静态方法实例化自动化Fragment*/
 	public static void start(Activity mContext, int containerRsID, WA_Parameters parameter)
@@ -114,7 +118,17 @@ public class WA_MainFragment extends WA_YundaFragment
 		btn_title_result = (Button) view.findViewById(R.id.btn_title_result);
 		ll_title = (LinearLayout) view.findViewById(R.id.ll_title);
         et_title = (EditText) view.findViewById(R.id.et_title);
+		et_index = (EditText) view.findViewById(R.id.et_index);
 		tv_title = (TextView) view.findViewById(R.id.tv_title);
+
+
+
+		btn_sort_result = (Button) view.findViewById(R.id.btn_sort_result);
+		btn_sort_title = (Button) view.findViewById(R.id.btn_sort_title);
+
+		btn_sort_result.setOnClickListener(this);
+		btn_sort_title.setOnClickListener(this);
+
 	}
 
 	/** 初始化两个不同功用的WebView */
@@ -226,12 +240,27 @@ public class WA_MainFragment extends WA_YundaFragment
 			@Override
 			public void onClick(View view) {
 
+				mUrlList = "";
+				if (null != titleSortMap) {
+					titleSortMap.clear();
+				}
 				if (index == shops.length) {
 					index = 0;
 				}
+				if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(getActivity(), TAOBAO, shops[index] + "linkUrl", ""))) {
+					btn_sort_title.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+				} else {
+					btn_sort_title.setBackgroundColor(android.R.drawable.btn_default);
+				}
+
 
 				if (index<shops.length){
 					index++;
+				}
+
+				String mIndex = et_index.getText().toString();
+				if (!TextUtils.isEmpty(mIndex)) {
+					index = Integer.parseInt(mIndex);
 				}
 				btnRefresh.setText(index + "/" + shops.length);
 //				listWeb.reload();
@@ -246,7 +275,7 @@ public class WA_MainFragment extends WA_YundaFragment
 		btnSearch.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				TAOBAO = shops[0];
+//				TAOBAO = shops[0];
 				goSearch(shops[index]);
 				sameUlrs = "";
 			}
@@ -312,6 +341,9 @@ public class WA_MainFragment extends WA_YundaFragment
 		btn_reset.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (null != titleSortMap) {
+					titleSortMap.clear();
+				}
 				if (null != titleList) {
 					titleList.clear();
 				}
@@ -593,6 +625,48 @@ public class WA_MainFragment extends WA_YundaFragment
 		} catch (Exception e) {
 
 		}
+	}
+
+
+	//TODO  点击事件
+	@Override
+	public void onClick(View v) {
+
+		try {
+			switch (v.getId()) {
+				case R.id.btn_sort_result:
+					String value = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "titleSort", "");
+					String urls = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "linkUrl", "");
+					String[] split = value.split("###");
+					String[] linkUrl = urls.split("###");
+					titleList.clear();
+					String str = "------------resultStr------------" + "\n";
+					String linkStr = "------------resultStr------------" + "\n";
+					for (int i = 0; i < split.length; i++) {
+						titleList.add(split[i]);
+						str = str + split[i]+ "\n";
+					}
+					for (int i = 0; i < linkUrl.length; i++) {
+						linkStr = linkStr + linkUrl[i] + "\n";
+					}
+					LogUtil.e(str);
+					LogUtil.e(linkStr);
+
+					break;
+				case R.id.btn_sort_title:
+					try {
+						SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index] + "titleSort", sortTitleMap(titleSortMap));
+						SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index]+"linkUrl", mUrlList);
+						btn_sort_title.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+					} catch (Exception e) {
+
+					}
+					break;
+			}
+		} catch (Exception e) {
+
+		}
+
 	}
 
 	/** ListWebView加载完注入基本JS函数 */

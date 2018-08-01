@@ -3,6 +3,7 @@ package com.example.webtest.base;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.JavascriptInterface;
@@ -67,6 +68,9 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected String Url = "https://s.taobao.com/search?q=%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9%E5%A5%B3%E7%94%9F&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20180725&ie=utf8";
 	protected String sameUlrs = "";
 	protected ArrayList<String> titleList;
+	protected HashMap<String,Integer> titleSortMap;
+	private boolean debug = false;
+	protected String mUrlList;
 
 
 	protected enum SearchType
@@ -79,12 +83,12 @@ public class WA_YundaFragment extends WA_BaseFragment
 	//人气
 	protected void goSearchClick() {
 		loadMyUrl(listWeb.getUrl()+"&sort=renqi");
-        goSearch(shops[index]);
+//        goSearch(shops[index]);
 	}
 	//销量
 	protected void saleDesc() {
 		loadMyUrl(listWeb.getUrl()+"&sort=sale-desc");
-        goSearch(shops[index]);
+//        goSearch(shops[index]);
 	}
 	protected void goSearchWord() {
 
@@ -571,12 +575,37 @@ public class WA_YundaFragment extends WA_BaseFragment
 			LogUtil.e("------------resultStr------------" + shops[index] + "\n" + resultStr);
 
 		}
+		@JavascriptInterface
+		public void sameResultForSort(String title,String paynum) throws IOException
+		{
+			if (null == titleSortMap) {
+				titleSortMap = new HashMap<String, Integer>();
+			}
+			if (null == titleSortMap.get(title)) {
+				titleSortMap.put(title, Integer.parseInt(paynum));
+			} else {
+				if (titleSortMap.get(title) > Integer.parseInt(paynum)) {
+					titleSortMap.put(title, Integer.parseInt(paynum));
+				}
+			}
+		}
 
 
 		@JavascriptInterface
 		public void afterSearch() throws IOException
 		{
 			handlerJs("relativeTitle();",2000);
+		}
+
+
+		@JavascriptInterface
+		public void sameResultRecord(String url) throws IOException
+		{
+			if (TextUtils.isEmpty(mUrlList)) {
+				mUrlList = url;
+			} else if (!mUrlList.contains(url)) {
+				mUrlList = mUrlList + "###" + url;
+			}
 		}
 
 
@@ -595,13 +624,21 @@ public class WA_YundaFragment extends WA_BaseFragment
 		public void linkArray(final String[] array) throws IOException
 		{
 			LogUtil.e("length:" + array.length + "");
-			LogUtil.e("length:" + array[0] + "");
+//			LogUtil.e("length:" + array[0] + "");
 			urls = array;
 
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					getSameStytleResult(array);
+					if (array.length < 1) {
+						Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
+					}
+					try {
+						getSameStytleResult(array);
+					} catch (Exception e) {
+
+					}
+
 				}
 			});
 		}
@@ -619,17 +656,33 @@ public class WA_YundaFragment extends WA_BaseFragment
 
         }
 
-		for (int i = 0; i < urlList.size(); i++) {
-//		for (int i = 0; i < 10; i++) {
-			if (urlList.get(i).contains("taobao.com")&&!sameUlrs.contains(urlList.get(i))) {
-				if (i > 0) {
-					lastUrl = urlList.get(i - 1);
-				} else {
-					lastUrl = urlList.get(0);
+		if (debug) {
+		for (int i = 0; i < 10; i++) {
+				if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
+					if (i > 0) {
+						lastUrl = urlList.get(i - 1);
+					} else {
+						lastUrl = urlList.get(0);
+					}
+					handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
+					sameUlrs = sameUlrs + "------" + urlList.get(i);
+
 				}
-				handlerActionDelay(urlList.get(i),lastUrl,3000*i);
-				sameUlrs = sameUlrs + "------" + urlList.get(i);
 			}
+		} else {
+			for (int i = 0; i < urlList.size(); i++) {
+				if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
+					if (i > 0) {
+						lastUrl = urlList.get(i - 1);
+					} else {
+						lastUrl = urlList.get(0);
+					}
+					handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
+					sameUlrs = sameUlrs + "------" + urlList.get(i);
+
+				}
+			}
+
 		}
 //		LogUtil.e("resultStr-----------end");
 
@@ -692,6 +745,27 @@ public class WA_YundaFragment extends WA_BaseFragment
 //			Log.e("rcresultStr: ",rcresultStr);
 			SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index]+"rc", str);
 		}
+	}
+
+	public String sortTitleMap(Map map) {
+		List<Map.Entry<String,Integer>> list = new ArrayList<Map.Entry<String,Integer>>(map.entrySet());
+		Collections.sort(list,new Comparator<Map.Entry<String,Integer>>() {
+			//升序排序
+			public int compare(Map.Entry<String, Integer> o1,
+							   Map.Entry<String, Integer> o2) {
+				return o2.getValue().compareTo(o1.getValue());
+			}
+
+		});
+		String str = "";
+		for(Map.Entry<String,Integer> mapping:list){
+			str = str + mapping.getKey()+"###";
+		}
+
+
+//		LogUtil.e(str);
+		return str;
+
 	}
 
 	private void sortTitleMap(Map map,String str) {

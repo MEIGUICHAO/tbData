@@ -1,57 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="classify">
-        <item>爆裂飞车玩具套装正版 男孩</item>
-        <item>宝宝识字挂图有声</item>
-        <item>抱枕公仔 毛绒 韩国 搞怪</item>
-        <item>芭比娃娃套装礼盒</item>
-        <item>风火轮小跑车</item>
-        <item>小学生书包女</item>
-        <item>彩色磁性画板儿童写字板</item>
-        <item>我的世界积木</item>
-        <item>抱着睡觉的娃娃</item>
-        <item>机器人</item>
-        <item>爆烈飞车3</item>
-        <item>儿童挂图早教有声挂图</item>
-        <item>无人机航拍 高清 专业超长续航</item>
-        <item>粉红顽皮豹</item>
-        <item>泡泡水补充液</item>
-        <item>火车轨道玩具</item>
-        <item>手抛飞机</item>
-        <item>淘气堡</item>
-        <item>儿童围栏室内 家用</item>
-        <item>儿童电动三轮摩托车</item>
-        <item>四轴飞行器</item>
-        <item>摇摇车</item>
-        <item>亿奇魔法粘粘乐</item>
-        <item>橡皮泥模具工具套装</item>
-        <item>史莱姆材料</item>
-        <item>泡泡玩具</item>
-        <item>玩具车</item>
-        <item>乐高积木 拼装</item>
-        <item>遥控船</item>
-        <item>芭比娃娃套装大礼盒别墅城堡</item>
-        <item>儿童玩具枪 男孩子</item>
-        <item>汪汪队玩具套装</item>
-        <item>合金小汽车</item>
-        <item>神奇魔珠</item>
-        <item>抖音玩具</item>
-        <item>娃娃公仔</item>
-        <item>玩具水枪 儿童</item>
-        <item>宝宝爬行垫</item>
-        <item>航母积木</item>
-        <item>儿童游泳池 充气</item>
-        <item>梦想豪宅</item>
-        <item>水枪玩具</item>
-        <item>恐龙模型</item>
-        <item>儿童汽车可坐带遥控</item>
-        <item>儿童玩具</item>
-        <item>乐高 幻影忍者</item>
-        <item>磁性积木</item>
-        <item>飞行棋</item>
-        <item>车模</item>
-        <item>仿真娃娃玩具婴儿</item>
-        <item>我的世界拼装玩具</item>
+
+
+        <item>帐篷</item>
+        <item>床单</item>
+        <item>网红拖鞋女夏 外穿</item>
+        <item>字帖</item>
+        <item>休闲裤 女 夏</item>
+        <item>杯子</item>
+        <item>潮男短袖</item>
+        <item>儿童夏装男童套装5-6岁夏季童装</item>
+        <item>家用简易鞋架</item>
+        <item>美妆蛋</item>
+        <item>儿童夏装女</item>
+        <item>海杆</item>
+        <item>大码女胖mm新款</item>
+        <item>平底凉鞋 女</item>
+        <item>衬衫 女 夏</item>
+        <item>牛仔裤男</item>
+        <item>帆布女单肩包</item>
+        <item>polo连衣裙</item>
+        <item>心机裙设计感</item>
+        <item>小米官方旗舰店</item>
+        <item>晶咕家大码女装</item>
+        <item>紫色上衣女学生</item>
+        <item>密封罐 玻璃</item>
+        <item>慵懒风卫衣女薄款</item>
+        <item>牛仔短裤女夏新款 韩版</item>
+        <item>网红耳环 潮人 超仙</item>
+        <item>苹果iphone8plus</item>
+        <item>华为nova3e</item>
+        <item>条纹荷叶边连衣裙</item>
+        <item>行车记录仪双镜头高清 全景</item>
+        <item>耳机</item>
+        <item>办公桌</item>
+        <item>女内衣</item>
+        <item>散粉</item>
+        <item>t恤裙长款过膝夏</item>
+        <item>网红凉拖</item>
+        <item>时尚吊带衫</item>
+        <item>t恤裙</item>
+        <item>小米 小米手机8</item>
+        <item>运动鞋</item>
+        <item>大1.5匹空调</item>
+        <item>连衣裙少女 学生 小清新</item>
+        <item>冰丝内裤 男</item>
+        <item>胸贴</item>
+        <item>微胖套装 减龄 洋气</item>
+        <item>阔腿裤套装</item>
+        <item>皮鞋 男</item>
+        <item>iphone7手机壳</item>
+        <item>空调扇冷暖两用静音 家用节能</item>
+        <item>无钢圈内衣 女</item>
+        <item>小米6X</item>
+        <item>背心 男</item>
+        <item>生日礼品 女生</item>
+        <item>耳环</item>
+        <item>沙发套</item>
+        <item>宽松t恤女</item>
+        <item>多肉</item>
+        <item>运动短裤女</item>
+        <item>墙贴</item>
+        <item>小学生书包</item>
+        <item>晚晚风套装 宽松</item>
+        <item>宿舍帘子下铺</item>
+        <item>火鸡面 韩国包邮 超辣</item>
+        <item>笔</item>
+        <item>钓箱</item>
+        <item>太阳帽 女夏 遮阳帽</item>
+        <item>电脑椅</item>
+        <item>胖妹妹套装 减龄夏</item>
+        <item>雷丝上衣女 蕾丝</item>
+        <item>中长款女t恤</item>
+        <item>aj1小闪电</item>
+        <item>裤男 休闲裤</item>
+        <item>猫砂</item>
+        <item>裹胸女抹胸 打底 防走光</item>
+        <item>气质连衣裙</item>
+        <item>赫本 黑裙</item>
+        <item>南岛风</item>
+        <item>巴克球</item>
+        <item>老爹鞋女韩版ulzzang 原宿</item>
+        <item>指尖陀螺</item>
+        <item>水晶泥手工制作 全套材料</item>
+        <item>ins超火的鞋子男生</item>
+        <item>小米手环3</item>
+        <item>祛斑霜正品 祛斑美白 淡化色斑</item>
+        <item>oppoa57手机壳</item>
+        <item>ins吊带裙</item>
+        <item>皮带</item>
+        <item>电饭煲</item>
+        <item>面包</item>
+        <item>相册</item>
+        <item>衣柜 简约现代 经济型</item>
+        <item>电话手表</item>
+        <item>小清新连衣裙</item>
+        <item>ipad保护套</item>
+        <item>半身裙 女 夏</item>
+        <item>小心机连衣裙 显瘦</item>
+        <item>华为手机</item>
+        <item>遮阳帽 女 防晒 遮脸 出游 百搭</item>
+        <item>短裤男潮</item>
+        <item>黑色t恤 女</item>
+        <item>皮鞋男</item>
+        <item>耳夹</item>
+        <item>8plus手机壳苹果</item>
+        <item>白色运动鞋女 原宿</item>
+        <item>蘑菇街</item>
+        <item>小香风斜挎包</item>
+        <item>雪纺衫</item>
+        <item>原宿运动鞋女韩版百搭ulzzang</item>
+        <item>电脑主机</item>
+        <item>汽车坐垫</item>
+        <item>男皮带</item>
+        <item>人字拖 男</item>
+        <item>男衬衫</item>
+        <item>运动裤女</item>
+        <item>卸妆水 脸部 温和 清洁无刺激</item>
+        <item>手机壳定制</item>
+        <item>洗发水</item>
+        <item>牛仔裤女</item>
+        <item>碎花连衣裙</item>
+        <item>格子连衣裙</item>
+        <item>孕妇裙</item>
+        <item>复古连衣裙</item>
+        <item>防晒衣女 中长款</item>
+        <item>短袖纯棉v领 女</item>
+        <item>九分裤萝卜裤</item>
+        <item>拉杆箱女可爱 小清新 大学生</item>
+        <item>腮红</item>
+        <item>运动装短袖短裤女</item>
+        <item>无袖上衣 女 夏</item>
+        <item>车内饰品摆件</item>
+        <item>墙纸自粘 卧室 温馨</item>
+        <item>书包 双肩包 女</item>
+        <item>苹果充电线</item>
+        <item>电瓶车</item>
+        <item>双眼皮神器 永久定型 韩国</item>
 
 
 

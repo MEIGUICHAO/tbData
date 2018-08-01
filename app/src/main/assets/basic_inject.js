@@ -70,50 +70,26 @@ function check(url){
     localMethod.JI_LOG("itemnames:"+itemnames.length);
     localMethod.JI_LOG("prices:"+prices.length);
     localMethod.JI_LOG("paids:"+paids.length);
-//    for(var i=0;i<itemnames.length;i++){
-//        localMethod.JI_LOG("itemnames:"+itemnames[i].innerText+",prices:"+prices[i].innerText+",paids:"+paids[i].innerText)
-//        text = text + "itemnames:"+itemnames[i]+",prices:"+prices[i]+",paids:"+paids[i]+ "\n";
-//    }
     var pay = paids[7].innerText.replace("人付款","");
     var text = url + "\n";
+
     if(paids.length>30&&pay>2){
         for(var i=0;i<itemnames.length;i++){
             if(paids[i].innerText.replace("人付款","")>10){
                 localMethod.titleSave(itemnames[i].innerText);
                 text = text + itemnames[i].innerText +"#####"+paids[i].innerText + "\n";
+                localMethod.sameResultForSort(itemnames[i].innerText,paids[i].innerText.replace("人付款",""));
             }
         }
-//        text = text + url;
         localMethod.sameResult(text);
+            localMethod.sameResultRecord(url);
+
     }
 
-//
-//    var as = document.getElementsByTagName("a");
-//    var checkboxs = document.getElementsByClassName("checkbox undefined undefined");
-//    var options = document.getElementsByClassName("option");
-//        localMethod.JI_LOG(as.length);
-//        localMethod.JI_LOG(checkboxs.length);
-//        localMethod.JI_LOG(options.length);
-//    var text = "--------as--------"+ "\n";
-//    for(var i=0;i<as.length;i++){
-//        text = text + i + "\n"+",innerText:"+as[i].innerText+
-////        ",innerHTML:"+as[i].innerHTML+
-//        ",value:"+as[i].value + ",as:"+as[i]+"\n";
-//    }
-//        localMethod.JI_LOG(text);
-//    text = "--------checkboxs--------"+ "\n";
-//    for(var i=0;i<checkboxs.length;i++){
-//        text = text + i+ "\n" +"checkboxs:"+checkboxs[i]+",innerText:"+checkboxs[i].innerText+
-////        ",innerHTML:"+checkboxs[i].innerHTML+
-//        ",value:"+checkboxs[i].value+"\n";
-//    }
-//            localMethod.JI_LOG(text);
-//    text = "--------options--------"+ "\n";
-//    for(var i=0;i<options.length;i++){
-//        text = text + i+ "\n" + "options:"+options[i]+",innerText:"+options[i].innerText+",innerHTML:"+options[i].innerHTML+",value:"+options[i].value+"\n";
-//    }
-//    localMethod.JI_LOG(text);
+
 }
+
+
 
 function goSearchWord(){
     var as = document.getElementsByTagName("a");
@@ -144,7 +120,7 @@ function findForSimiliar(as){
 
     for(var i=0;i<as.length;i++){
 
-        if(as[i].innerText=="找同款"){
+        if(as[i].innerText=="找同款"&&as[i]!=""){
         text = text + i + "\n"+",innerText:"+as[i].innerText+
 //        ",innerHTML:"+as[i].innerHTML+
         ",value:"+as[i].value + ",as:"+as[i]+"\n";

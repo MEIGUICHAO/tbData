@@ -60,6 +60,32 @@
 
     </LinearLayout>
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_index"
+            android:inputType="number"
+            android:layout_width="100dp"
+            android:layout_height="38dp" />
+        <Button
+            android:id="@+id/btn_sort_title"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="降序" />
+
+        <Button
+            android:id="@+id/btn_sort_result"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="排序结果" />
+
+
+    </LinearLayout>
+    <LinearLayout
         android:visibility="gone"
         android:orientation="horizontal"
         android:layout_width="match_parent"
