@@ -725,7 +725,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 					} else {
 						lastUrl = urlList.get(0);
 					}
-					handlerActionDelay(urlList.get(i), lastUrl, 1000 * i);
+					handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
 					sameUlrs = sameUlrs + "------" + urlList.get(i);
 
 				}
@@ -738,7 +738,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 					} else {
 						lastUrl = urlList.get(0);
 					}
-					handlerActionDelay(urlList.get(i), lastUrl, 1000 * i);
+					handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
 					sameUlrs = sameUlrs + "------" + urlList.get(i);
 					if (i == urlList.size() - 1) {
 						handler.postDelayed(new Runnable() {
