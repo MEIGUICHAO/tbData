@@ -2,10 +2,40 @@
 
 
 //##############################################################################################################
-//设置账号密码
-function setPswName(){
+//收集热销标题
+function getTitleList(){
+    next();
+    localMethod.loadRenqi();
+//    setTimeout(function(){
+//        var as = document.getElementsByTagName("a");
+//        findForClick(as,"下一页 ");
+//    },1000);
+//    setTimeout(function(){
+//        next();
+//    },2000);
+//    setTimeout(function(){
+//        localMethod.loadRenqi();
+//    },4000);
+
 
 }
+
+function next(){
+    var imgs = document.getElementsByTagName("img");
+    var salenums = document.getElementsByClassName("deal-cnt");
+    var text = "";
+    for(var j=0;j<imgs.length;j++){
+        try{
+            text = text +imgs[j].getAttribute("alt")+ salenums[j].innerText+"\n";
+            localMethod.sameResultForSort(imgs[j].getAttribute("alt"),salenums[j].innerText.replace("人付款",""));
+        }catch(e){
+
+        }
+    }
+    localMethod.JI_LOG(text);
+}
+
+
 
 //标题组合
 function titleCombination(){
@@ -29,20 +59,14 @@ function titleCombination(){
 
 //标题组合
 function relativeTitle(){
-var as = document.getElementsByTagName("a");
-            localMethod.JI_LOG(as.length);
-            findForSimiliar(as);
-//    var as = document.getElementsByTagName("a");
-//    findForClick(as,"关联热词");
-//    for(var j=0;j<5;j++){
-//        setTimeout(function(){
-//        getTableTitleData();
-//            var as = document.getElementsByTagName("a");
-//            findForClick(as,"下一页 >");
-//        },500*(j+1));
-//    }
-
+    var as = document.getElementsByTagName("a");
+    findForSimiliar(as);
 }
+
+
+
+
+
 
 //跳到市场
 function goSearchClick(){
@@ -112,6 +136,11 @@ function setSearchWord(shopword){
 //    localMethod.afterSearch();
 }
 
+
+function getSameStyleUrlList(){
+
+}
+
 //打印同款链接
 function findForSimiliar(as){
     var text = "--------as--------"+ "\n";
@@ -130,6 +159,7 @@ function findForSimiliar(as){
            index = index + 1;
         }
     }
+
     localMethod.linkArray(samestytle);
 }
 

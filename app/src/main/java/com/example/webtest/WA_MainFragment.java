@@ -49,9 +49,6 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 	private int titleCount;
 	private int shopCount;
 	private ArrayList<String> outputTitleList;
-	private Button btn_sort_result;
-	private Button btn_sort_title;
-	private EditText et_index;
 
 	/**  通过静态方法实例化自动化Fragment*/
 	public static void start(Activity mContext, int containerRsID, WA_Parameters parameter)
@@ -205,12 +202,12 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 //支持获取手势焦点
 
 
-//
-//		webSetting.setJavaScriptEnabled(true);
-//		webSetting.setDefaultTextEncodingName("utf-8");
-//		webSetting.setAllowFileAccess(true);
-//		webSetting.setUseWideViewPort(true);
-//		webSetting.setLoadWithOverviewMode(true);
+
+		webSetting.setJavaScriptEnabled(true);
+		webSetting.setDefaultTextEncodingName("utf-8");
+		webSetting.setAllowFileAccess(true);
+		webSetting.setUseWideViewPort(true);
+		webSetting.setLoadWithOverviewMode(true);
 		webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
 
@@ -240,29 +237,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			@Override
 			public void onClick(View view) {
 
-				mUrlList = "";
-				if (null != titleSortMap) {
-					titleSortMap.clear();
-				}
-				if (index == shops.length) {
-					index = 0;
-				}
-				if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(getActivity(), TAOBAO, shops[index] + "linkUrl", ""))) {
-					btn_sort_title.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
-				} else {
-					btn_sort_title.setBackgroundColor(android.R.drawable.btn_default);
-				}
 
-
-				if (index<shops.length){
-					index++;
-				}
-
-				String mIndex = et_index.getText().toString();
-				if (!TextUtils.isEmpty(mIndex)) {
-					index = Integer.parseInt(mIndex);
-				}
-				btnRefresh.setText(index + "/" + shops.length);
+				refreshSearch();
 //				listWeb.reload();
 			}
 		});
@@ -277,7 +253,6 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			public void onClick(View view) {
 //				TAOBAO = shops[0];
 				goSearch(shops[index]);
-				sameUlrs = "";
 			}
 		});
 		btnGosearch.setOnClickListener(new View.OnClickListener() {
@@ -463,6 +438,7 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 //		});
 	}
 
+
 	private void getProcess() {
 		if (titleIdex + 1 == titleList.size()) {
             titleIdex = 0;
@@ -635,32 +611,11 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		try {
 			switch (v.getId()) {
 				case R.id.btn_sort_result:
-					String value = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "titleSort", "");
-					String urls = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "linkUrl", "");
-					String[] split = value.split("###");
-					String[] linkUrl = urls.split("###");
-					titleList.clear();
-					String str = "------------resultStr------------" + "\n";
-					String linkStr = "------------resultStr------------" + "\n";
-					for (int i = 0; i < split.length; i++) {
-						titleList.add(split[i]);
-						str = str + split[i]+ "\n";
-					}
-					for (int i = 0; i < linkUrl.length; i++) {
-						linkStr = linkStr + linkUrl[i] + "\n";
-					}
-					LogUtil.e(str);
-					LogUtil.e(linkStr);
+					sortResult();
 
 					break;
 				case R.id.btn_sort_title:
-					try {
-						SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index] + "titleSort", sortTitleMap(titleSortMap));
-						SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index]+"linkUrl", mUrlList);
-						btn_sort_title.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
-					} catch (Exception e) {
-
-					}
+					sortTitle();
 					break;
 			}
 		} catch (Exception e) {
@@ -668,6 +623,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		}
 
 	}
+
+
 
 	/** ListWebView加载完注入基本JS函数 */
 	private class MyListWebViewClient extends WebViewClient

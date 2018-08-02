@@ -65,13 +65,45 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected LinearLayout ll_title;
 	protected EditText et_title;
 
-	protected String Url = "https://s.taobao.com/search?q=%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9%E5%A5%B3%E7%94%9F&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20180725&ie=utf8";
+	protected Button btn_sort_result;
+	protected Button btn_sort_title;
+	protected EditText et_index;
+
+	//	protected String Url = "https://s.taobao.com/search?q=%E7%94%9F%E6%97%A5%E7%A4%BC%E7%89%A9%E5%A5%B3%E7%94%9F&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20180725&ie=utf8";
+	protected String Url = "https://s.taobao.com/search?q=%E8%8B%B9%E6%9E%9C&s_from=newHeader&ssid=s5-e&search_type=item&sourceId=tb.item";
 	protected String sameUlrs = "";
 	protected ArrayList<String> titleList;
 	protected HashMap<String,Integer> titleSortMap;
 	private boolean debug = false;
 	protected String mUrlList;
+	private String renqiUrl;
+	private int sameUrlSize;
 
+	protected void refreshSearch() {
+		mUrlList = "";
+		if (null != titleSortMap) {
+			titleSortMap.clear();
+		}
+		if (index == shops.length) {
+			index = 0;
+		}
+		if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(getActivity(), TAOBAO, shops[index] + "linkUrl", ""))) {
+			btn_sort_title.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+		} else {
+			btn_sort_title.setBackgroundColor(android.R.drawable.btn_default);
+		}
+
+
+		if (index<shops.length){
+			index++;
+		}
+
+		String mIndex = et_index.getText().toString();
+		if (!TextUtils.isEmpty(mIndex)) {
+			index = Integer.parseInt(mIndex);
+		}
+		btnRefresh.setText(index + "/" + shops.length);
+	}
 
 	protected enum SearchType
 	{
@@ -88,7 +120,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 	//销量
 	protected void saleDesc() {
 		loadMyUrl(listWeb.getUrl()+"&sort=sale-desc");
-//        goSearch(shops[index]);
+		renqiUrl = listWeb.getUrl().replace("&sort=sale-desc", "&sort=renqi");
+		handlerJs("getTitleList();",5000);
 	}
 	protected void goSearchWord() {
 
@@ -111,7 +144,14 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 	protected void goSearch(final String search) {
 //		handlerJs("setSearchWord(\""+search+"\",\""+randomtime+"\");");
+		sameUlrs = "";
 		handlerJs("setSearchWord(\"" + search + "\");");
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				saleDesc();
+			}
+		}, 3000);
 	}
 
 	private void handlerJs(final String strlogic) {
@@ -141,7 +181,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 			@Override
 			public void run() {
 				loadMyUrl(url);
-                check(lastUrl);
+				check(lastUrl);
 				//TODO
 
 			}
@@ -510,6 +550,20 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 
 
+
+		@JavascriptInterface
+		public void loadRenqi()
+		{
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					loadMyUrl(renqiUrl);
+					handlerJs("relativeTitle();");
+					handlerJs("getSameStyleUrlList();");
+				}
+			});
+		}
+
 		@JavascriptInterface
 		public void JI_showToast(String content)
 		{
@@ -631,7 +685,13 @@ public class WA_YundaFragment extends WA_BaseFragment
 				@Override
 				public void run() {
 					if (array.length < 1) {
-						Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
+						if (index != shops.length - 1) {
+							Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
+							sortTitle();
+							refreshSearch();
+							goSearch(shops[index]);
+						}
+
 					}
 					try {
 						getSameStytleResult(array);
@@ -647,24 +707,25 @@ public class WA_YundaFragment extends WA_BaseFragment
 	//TODO
 	private void getSameStytleResult(String[] linkUrls) {
 		String lastUrl = "";
-        ArrayList<String> urlList = new ArrayList<String>();
-        for (int i = 0; i < linkUrls.length; i++) {
+		ArrayList<String> urlList = new ArrayList<String>();
+		sameUrlSize = linkUrls.length;
+		for (int i = 0; i < linkUrls.length; i++) {
 
-            if (linkUrls[i].contains("taobao.com")&&!sameUlrs.contains(linkUrls[i])) {
-                urlList.add(linkUrls[i]);
-            }
+			if (linkUrls[i].contains("taobao.com")&&!sameUlrs.contains(linkUrls[i])) {
+				urlList.add(linkUrls[i]);
+			}
 
-        }
+		}
 
 		if (debug) {
-		for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 10; i++) {
 				if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
 					if (i > 0) {
 						lastUrl = urlList.get(i - 1);
 					} else {
 						lastUrl = urlList.get(0);
 					}
-					handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
+					handlerActionDelay(urlList.get(i), lastUrl, 1000 * i);
 					sameUlrs = sameUlrs + "------" + urlList.get(i);
 
 				}
@@ -677,8 +738,21 @@ public class WA_YundaFragment extends WA_BaseFragment
 					} else {
 						lastUrl = urlList.get(0);
 					}
-					handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
+					handlerActionDelay(urlList.get(i), lastUrl, 1000 * i);
 					sameUlrs = sameUlrs + "------" + urlList.get(i);
+					if (i == urlList.size() - 1) {
+						handler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+
+								sortTitle();
+								if (index != shops.length - 1) {
+									refreshSearch();
+									goSearch(shops[index]);
+								}
+							}
+						}, 1000*i+2000);
+					}
 
 				}
 			}
@@ -690,7 +764,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 
 
-    public void loadMyUrl(String url) {
+	public void loadMyUrl(String url) {
 		listWeb.loadUrl(url);
 	}
 
@@ -708,6 +782,46 @@ public class WA_YundaFragment extends WA_BaseFragment
 		}
 		return length;
 
+	}
+
+
+	public void sortTitle() {
+		LogUtil.e("存sp健值：" + TAOBAO + "-" + shops[index]);
+		try {
+			SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index] + "titleSort", sortTitleMap(titleSortMap));
+			SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index]+"linkUrl", mUrlList);
+			btn_sort_title.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+		} catch (Exception e) {
+			LogUtil.e("sp健值错误:" + e.toString());
+		}
+		sortResult();
+	}
+
+	public void sortResult() {
+		LogUtil.e("取sp健值：" + TAOBAO + "-" + shops[index]);
+		String value = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "titleSort", "");
+		String urls = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "linkUrl", "");
+		String[] split = value.split("###");
+		String[] linkUrl = urls.split("###");
+		if (null == titleList) {
+			titleList = new ArrayList<String>();
+		} else {
+			titleList.clear();
+
+		}
+		String str = "------------resultStr------------" + "\n";
+		String linkStr = "------------resultStr------------" + "\n";
+		for (int i = 0; i < split.length; i++) {
+			titleList.add(split[i]);
+			str = str + split[i]+ "\n";
+		}
+		for (int i = 0; i < linkUrl.length; i++) {
+			if (!linkStr.contains(linkUrl[i])) {
+				linkStr = linkStr + linkUrl[i] + "\n";
+			}
+		}
+		LogUtil.e("sp健值：" + str);
+		LogUtil.e("sp健值：" + linkStr);
 	}
 
 	private void sortMap(Map map,String str) {
