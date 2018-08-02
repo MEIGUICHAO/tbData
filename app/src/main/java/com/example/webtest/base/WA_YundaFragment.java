@@ -751,7 +751,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 									goSearch(shops[index]);
 								}
 							}
-						}, 1000*i+2000);
+						}, 3000*i+2000);
 					}
 
 				}
