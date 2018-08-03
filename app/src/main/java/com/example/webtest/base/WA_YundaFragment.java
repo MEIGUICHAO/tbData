@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -786,6 +787,10 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 
 	public void sortTitle() {
+		if (ll_title.getVisibility() == View.VISIBLE) {
+			Toast.makeText(getActivity(), "请切换", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		LogUtil.e("存sp健值：" + TAOBAO + "-" + shops[index]);
 		try {
 			SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index] + "titleSort", sortTitleMap(titleSortMap));
@@ -798,7 +803,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 	}
 
 	public void sortResult() {
-		LogUtil.e("取sp健值：" + TAOBAO + "-" + shops[index]);
+		LogUtil.e("取sp健值：" + "\n" + TAOBAO + "-" + index + "---" + shops[index]);
+
 		String value = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "titleSort", "");
 		String urls = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "linkUrl", "");
 		String[] split = value.split("###");

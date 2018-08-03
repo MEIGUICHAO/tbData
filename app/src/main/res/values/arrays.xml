@@ -3,6 +3,72 @@
     <string-array name="classify">
 
 
+        <!--<item>抽风式散热器</item>-->
+        <!--<item>联想电脑贴纸</item>-->
+        <!--<item>小米电脑 贴纸</item>-->
+        <!--<item>懒人桌 床上用</item>-->
+        <!--<item>联想笔记本充电器</item>-->
+        <!--<item>手机电视同屏器</item>-->
+        <!--<item>苹果转换器</item>-->
+        <!--<item>外星人电脑包</item>-->
+        <!--<item>苹果笔记本保护壳</item>-->
+        <!--<item>床上桌子折叠</item>-->
+        <!--<item>苹果笔记本保护膜</item>-->
+        <!--<item>macbook 电脑包</item>-->
+        <!--<item>联想笔记本电脑包</item>-->
+        <!--<item>电脑包男手提</item>-->
+        <!--<item>笔记本包15.6寸</item>-->
+        <!--<item>苹果电脑包 13.3寸</item>-->
+        <!--<item>mac pro 13寸键盘膜</item>-->
+        <!--<item>电脑膜</item>-->
+        <!--<item>苹果电脑键盘膜</item>-->
+        <!--<item>屏幕</item>-->
+        <!--<item>电脑包苹果</item>-->
+        <!--<item>macbook pro 13保护壳</item>-->
+        <!--<item>笔记本包</item>-->
+        <!--<item>电脑做桌 床上</item>-->
+        <!--<item>电脑包女</item>-->
+        <!--<item>华硕笔记本充电器</item>-->
+        <!--<item>笔记本贴膜 外壳膜</item>-->
+        <!--<item>macbookair电脑包</item>-->
+        <!--<item>笔记本电脑做桌</item>-->
+        <!--<item>supreme贴</item>-->
+        <!--<item>华硕飞行堡垒贴纸</item>-->
+        <!--<item>微软 贴纸</item>-->
+        <!--<item>键盘膜 笔记本 华硕</item>-->
+        <!--<item>笔记本内胆包13.3寸</item>-->
+        <!--<item>手机连接电视</item>-->
+        <!--<item>潮牌贴</item>-->
+        <!--<item>懒人电脑床桌</item>-->
+        <!--<item>苹果笔记本手提电脑包</item>-->
+        <!--<item>联想笔记本电脑贴膜</item>-->
+        <!--<item>手提电脑包女</item>-->
+        <!--<item>笔记本电脑散热器底座</item>-->
+        <!--<item>行李箱贴纸 防水 潮牌 涂鸦</item>-->
+        <!--<item>笔记本电脑散热</item>-->
+        <!--<item>type-c转hdmi</item>-->
+        <!--<item>电脑防窥膜</item>-->
+        <!--<item>懒人桌 折叠</item>-->
+        <!--<item>行李箱贴</item>-->
+        <!--<item>电脑包15.6</item>-->
+        <!--<item>macbook 保护壳</item>-->
+        <!--<item>笔记本散热器</item>-->
+        <!--<item>笔记本水冷散热器</item>-->
+        <!--<item>笔记本键盘膜</item>-->
+        <!--<item>外星人贴膜</item>-->
+        <!--<item>散热底座</item>-->
+        <!--<item>3m贴纸</item>-->
+        <!--<item>macbook pro转换器</item>-->
+        <!--<item>surface pro5贴膜</item>-->
+        <!--<item>苹果笔记本键盘膜</item>-->
+        <!--<item>macbook 支架</item>-->
+        <!--<item>笔记本电脑散热架</item>-->
+        <!--<item>笔记本电脑散热器抽风式静音</item>-->
+        <!--<item>17寸笔记本散热器</item>-->
+        <!--<item>小米笔记本电脑包</item>-->
+        <!--<item>苹果笔记本电脑包13.3</item>-->
+        <!--<item>笔记本电脑内胆包</item>-->
+
 
         <!--<item>婴儿理发器</item>-->
         <!--<item>婴儿指甲刀</item>-->
@@ -51,13 +117,13 @@
         <!--<item>火鸡面 韩国包邮 超辣</item>-->
         <!--<item>笔</item>-->
         <!--<item>钓箱</item>-->
-        <!--<item>太阳帽 女夏 遮阳帽</item>-->
-        <!--<item>电脑椅</item>-->
-        <!--<item>胖妹妹套装 减龄夏</item>-->
-        <!--<item>雷丝上衣女 蕾丝</item>-->
-        <!--<item>中长款女t恤</item>-->
-        <!--<item>aj1小闪电</item>-->
-        <!--<item>裤男 休闲裤</item>-->
+        <item>太阳帽 女夏 遮阳帽</item>
+        <item>电脑椅</item>
+        <item>胖妹妹套装 减龄夏</item>
+        <item>雷丝上衣女 蕾丝</item>
+        <item>中长款女t恤</item>
+        <item>aj1小闪电</item>
+        <item>裤男 休闲裤</item>
         <!--<item>猫砂</item>-->
         <!--<item>裹胸女抹胸 打底 防走光</item>-->
         <!--<item>气质连衣裙</item>-->
@@ -115,65 +181,76 @@
         <!--<item>腮红</item>-->
         <!--<item>运动装短袖短裤女</item>-->
         <!--<item>无袖上衣 女 夏</item>-->
-        <!--<item>车内饰品摆件</item>--><item>幼儿拖鞋</item>
+        <!--<item>车内饰品摆件</item>-->
+
+
+
+
+
+
+
+
+
+
         <!--<item>大女童时尚凉鞋</item>-->
         <!--<item>女宝宝凉鞋</item>-->
-        <item>女童凉鞋 公主鞋</item>
-        <item>婴儿凉鞋</item>
-        <item>公主鞋 女童 凉鞋</item>
-        <item>儿童凉鞋 男童</item>
-        <item>拖鞋 儿童 夏 男</item>
-        <item>女童小白鞋秋</item>
-        <item>初生婴儿鞋</item>
-        <item>宝宝学步鞋</item>
-        <item>亲子拖鞋夏 一家三口 防滑软底</item>
-        <item>儿童凉鞋男 男童 真皮</item>
-        <item>女童真皮凉鞋 公主鞋</item>
-        <item>女童凉拖鞋外穿夏时尚</item>
-        <item>童鞋 女 凉鞋</item>
-        <item>儿童凉鞋女 夏 小学生</item>
-        <item>女童水晶凉鞋 公主鞋</item>
-        <item>宝宝凉鞋男1-3岁 防滑软底 男童</item>
-        <item>宝宝凉鞋男1-3岁 防滑软底 包头</item>
-        <item>儿童篮球鞋</item>
-        <item>男生篮球鞋</item>
-        <item>儿童拖鞋夏女 可爱 小王子</item>
-        <item>男童凉鞋 中大童</item>
-        <item>宝宝拖鞋夏女1-3岁防滑 婴儿</item>
-        <item>凉鞋女童</item>
-        <item>宝宝凉鞋女1-3岁 防滑软底公主</item>
-        <item>女童拖鞋夏季 可爱 小公主</item>
-        <item>女童银色公主鞋</item>
-        <item>小童拖鞋夏女 女童</item>
-        <item>儿童洞洞拖鞋 防滑</item>
-        <item>儿童真皮凉鞋女</item>
-        <item>儿童人字拖</item>
-        <item>女童凉鞋 夏 鱼嘴</item>
-        <item>宝宝凉鞋 男</item>
-        <item>宝宝凉鞋女</item>
-        <item>男宝凉鞋1-3岁 夏季韩版</item>
-        <item>女童罗马凉鞋 高帮</item>
-        <item>小女孩凉鞋4-5 6岁夏 女童 可爱</item>
-        <item>女童凉鞋真皮夏</item>
-        <item>女童拖鞋夏季 可爱 小公主 韩版</item>
-        <item>儿童雨靴</item>
-        <item>宝宝拖鞋夏男1-3岁防滑 婴儿</item>
-        <item>女孩拖鞋儿童</item>
-        <item>宝宝鞋子女1-3岁</item>
-        <item>女童皮鞋</item>
-        <item>公主小皮鞋儿童</item>
-        <item>女童鞋</item>
-        <item>婴儿软底棉鞋</item>
-        <item>女童鞋秋 小学生</item>
-        <item>外贸儿童拖鞋</item>
-        <item>女童凉鞋 韩版 女孩</item>
-        <item>水晶鞋公主鞋</item>
-        <item>公主鞋</item>
-        <item>儿童帆布鞋</item>
-        <item>儿童网红鞋</item>
-        <item>男中童洞洞鞋</item>
-        <item>六岁女童凉鞋</item>
-        <item>童鞋 女</item>
+        <!--<item>幼儿拖鞋</item>-->
+        <!--<item>女童凉鞋 公主鞋</item>-->
+        <!--<item>婴儿凉鞋</item>-->
+        <!--<item>公主鞋 女童 凉鞋</item>-->
+        <!--<item>儿童凉鞋 男童</item>-->
+        <!--<item>拖鞋 儿童 夏 男</item>-->
+        <!--<item>女童小白鞋秋</item>-->
+        <!--<item>初生婴儿鞋</item>-->
+        <!--<item>宝宝学步鞋</item>-->
+        <!--<item>亲子拖鞋夏 一家三口 防滑软底</item>-->
+        <!--<item>儿童凉鞋男 男童 真皮</item>-->
+        <!--<item>女童真皮凉鞋 公主鞋</item>-->
+        <!--<item>女童凉拖鞋外穿夏时尚</item>-->
+        <!--<item>童鞋 女 凉鞋</item>-->
+        <!--<item>儿童凉鞋女 夏 小学生</item>-->
+        <!--<item>女童水晶凉鞋 公主鞋</item>-->
+        <!--<item>宝宝凉鞋男1-3岁 防滑软底 男童</item>-->
+        <!--<item>宝宝凉鞋男1-3岁 防滑软底 包头</item>-->
+        <!--<item>儿童篮球鞋</item>-->
+        <!--<item>男生篮球鞋</item>-->
+        <!--<item>儿童拖鞋夏女 可爱 小王子</item>-->
+        <!--<item>男童凉鞋 中大童</item>-->
+        <!--<item>宝宝拖鞋夏女1-3岁防滑 婴儿</item>-->
+        <!--<item>凉鞋女童</item>-->
+        <!--<item>宝宝凉鞋女1-3岁 防滑软底公主</item>-->
+        <!--<item>女童拖鞋夏季 可爱 小公主</item>-->
+        <!--<item>女童银色公主鞋</item>-->
+        <!--<item>小童拖鞋夏女 女童</item>-->
+        <!--<item>儿童洞洞拖鞋 防滑</item>-->
+        <!--<item>儿童真皮凉鞋女</item>-->
+        <!--<item>儿童人字拖</item>-->
+        <!--<item>女童凉鞋 夏 鱼嘴</item>-->
+        <!--<item>宝宝凉鞋 男</item>-->
+        <!--<item>宝宝凉鞋女</item>-->
+        <!--<item>男宝凉鞋1-3岁 夏季韩版</item>-->
+        <!--<item>女童罗马凉鞋 高帮</item>-->
+        <!--<item>小女孩凉鞋4-5 6岁夏 女童 可爱</item>-->
+        <!--<item>女童凉鞋真皮夏</item>-->
+        <!--<item>女童拖鞋夏季 可爱 小公主 韩版</item>-->
+        <!--<item>儿童雨靴</item>-->
+        <!--<item>宝宝拖鞋夏男1-3岁防滑 婴儿</item>-->
+        <!--<item>女孩拖鞋儿童</item>-->
+        <!--<item>宝宝鞋子女1-3岁</item>-->
+        <!--<item>女童皮鞋</item>-->
+        <!--<item>公主小皮鞋儿童</item>-->
+        <!--<item>女童鞋</item>-->
+        <!--<item>婴儿软底棉鞋</item>-->
+        <!--<item>女童鞋秋 小学生</item>-->
+        <!--<item>外贸儿童拖鞋</item>-->
+        <!--<item>女童凉鞋 韩版 女孩</item>-->
+        <!--<item>水晶鞋公主鞋</item>-->
+        <!--<item>公主鞋</item>-->
+        <!--<item>儿童帆布鞋</item>-->
+        <!--<item>儿童网红鞋</item>-->
+        <!--<item>男中童洞洞鞋</item>-->
+        <!--<item>六岁女童凉鞋</item>-->
+        <!--<item>童鞋 女</item>-->
 
 
 
