@@ -475,6 +475,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 								if (iStr >= jStr && jStr < 1.5 * strLength(samestr)) {
 									String replace = list.get(j).replace(samestr, "");
 									list.remove(j);
+
+
 									list.add(j, replace);
 								} else if (iStr < 1.5 * strLength(samestr)){
 									String replace = list.get(i).replace(samestr, "");
