@@ -27,6 +27,7 @@ import com.example.webtest.io.SharedPreferencesUtils;
 import com.example.webtest.io.WA_Parameters;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -377,7 +378,7 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 //				keywordSplite();
 				String value = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "titleSort", "");
 				String[] titles = value.split("###");
-				String resutlStr = "";
+				String resutlStr = "¥¥¥¥";
 				String result1 = "";
 				String result2 = "";
 				String result3 = "";
@@ -440,6 +441,69 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 					}
 				}
 				LogUtil.e(resutlStr);
+				String[] keywordStrs = resutlStr.split("###");
+				LogUtil.e(resutlStr.split("###").length + "");
+
+				ArrayList<String> list = new ArrayList<String>();
+				for (int i = 1; i < keywordStrs.length; i++) {
+					list.add(keywordStrs[i]);
+				}
+
+				//去重
+				for (int i = 0; i < list.size(); i++) {
+					for(int j = i + 1;j < list.size();j++){
+						if(list.get(i).contains(list.get(j))||list.get(j).contains(list.get(i))){
+							if (strLength(list.get(i)) > strLength(list.get(j))) {
+								list.remove(j); //remove(int index)
+							} else {
+								list.remove(i);
+							}
+							j--;            //一定要记住j--，不然会出错
+						}
+					}
+				}
+
+				//去重
+				for (int i = 0; i < list.size(); i++) {
+					for(int j = i + 1;j < list.size();j++){
+						if (!TextUtils.isEmpty(list.get(i)) && !TextUtils.isEmpty(list.get(j))) {
+
+							String samestr = maxSubstring(list.get(i), list.get(j));
+							int iStr = strLength(list.get(i));
+							int jStr = strLength(list.get(j));
+							if (!TextUtils.isEmpty(samestr)) {
+								if (iStr >= jStr && jStr < 1.5 * strLength(samestr)) {
+									String replace = list.get(j).replace(samestr, "");
+									list.remove(j);
+									list.add(j, replace);
+								} else if (iStr < 1.5 * strLength(samestr)){
+									String replace = list.get(i).replace(samestr, "");
+									list.remove(i);
+									list.add(i, replace);
+								}
+							}
+						}
+					}
+				}
+
+				String keywordStr = "";
+
+				for (int i = 0; i < list.size(); i++) {
+					if (TextUtils.isEmpty(list.get(i).trim())) {
+						list.remove(i);
+					}
+				}
+
+				for (int i = 0; i < list.size(); i++) {
+
+					if (TextUtils.isEmpty(keywordStr)) {
+						keywordStr = list.get(i) + "\n";
+					} else {
+						keywordStr = keywordStr + list.get(i) + "\n";
+					}
+				}
+				LogUtil.e(list.size() + "");
+				LogUtil.e(keywordStr);
 
 			}
 		});
