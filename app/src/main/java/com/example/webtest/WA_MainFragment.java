@@ -374,20 +374,73 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		btn_keyword_split.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
+//				keywordSplite();
+				String value = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "titleSort", "");
+				String[] titles = value.split("###");
+				String resutlStr = "";
+				String result1 = "";
+				String result2 = "";
+				String result3 = "";
+				String result4 = "";
+				String result5 = "";
+				String result6 = "";
+				String result7 = "";
+				String result8 = "";
+				String result9 = "";
+				String result10 = "";
+				for (int i = 0; i < titles.length; i++) {
+					result1 = maxSubstring(titles[0], titles[i]);
+					if (!resutlStr.contains(result1)) {
+						resutlStr = resutlStr + "###" + result1;
+					}
+					result2 = maxSubstring(titles[1], titles[i]);
 
-					String etString = et_title.getText().toString();
-					String[] part = etString.split("##");
-					keywordSplit = part[0].split("#");
-					String[] titleShop = part[1].split("#");
-					titleCount = Integer.parseInt(titleShop[0]);
-					shopCount = Integer.parseInt(titleShop[1]);
-					LogUtil.e("etString:" + etString + ",keywordSplit_size:" + keywordSplit.length + ",titleCount:" + titleCount
-							+ ",shopCount:" + shopCount);
-				} catch (Exception e) {
-					LogUtil.e(e.toString());
+					if (!resutlStr.contains(result2)) {
+						resutlStr = resutlStr + "###" + result2;
+					}
+					result3 = maxSubstring(titles[2], titles[i]);
 
+					if (!resutlStr.contains(result3)) {
+						resutlStr = resutlStr + "###" + result3;
+					}
+					result4 = maxSubstring(titles[3], titles[i]);
+
+					if (!resutlStr.contains(result4)) {
+						resutlStr = resutlStr + "###" + result4;
+					}
+					result5 = maxSubstring(titles[4], titles[i]);
+
+					if (!resutlStr.contains(result5)) {
+						resutlStr = resutlStr + "###" + result5;
+					}
+					result6 = maxSubstring(titles[5], titles[i]);
+
+					if (!resutlStr.contains(result6)) {
+						resutlStr = resutlStr + "###" + result6;
+					}
+					result7 = maxSubstring(titles[6], titles[i]);
+
+					if (!resutlStr.contains(result7)) {
+						resutlStr = resutlStr + "###" + result7;
+					}
+					result8 = maxSubstring(titles[7], titles[i]);
+
+					if (!resutlStr.contains(result8)) {
+						resutlStr = resutlStr + "###" + result8;
+					}
+					result9 = maxSubstring(titles[8], titles[i]);
+
+					if (!resutlStr.contains(result9)) {
+						resutlStr = resutlStr + "###" + result9;
+					}
+					result10 = maxSubstring(titles[9], titles[i]);
+
+					if (!resutlStr.contains(result10)) {
+						resutlStr = resutlStr + "###" + result10;
+					}
 				}
+				LogUtil.e(resutlStr);
+
 			}
 		});
 		btn_title_result.setOnClickListener(new View.OnClickListener() {
@@ -436,6 +489,23 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 //				}.start();
 //			}
 //		});
+	}
+
+	private void keywordSplite() {
+		try {
+
+            String etString = et_title.getText().toString();
+            String[] part = etString.split("##");
+            keywordSplit = part[0].split("#");
+            String[] titleShop = part[1].split("#");
+            titleCount = Integer.parseInt(titleShop[0]);
+            shopCount = Integer.parseInt(titleShop[1]);
+            LogUtil.e("etString:" + etString + ",keywordSplit_size:" + keywordSplit.length + ",titleCount:" + titleCount
+                    + ",shopCount:" + shopCount);
+        } catch (Exception e) {
+            LogUtil.e(e.toString());
+
+        }
 	}
 
 

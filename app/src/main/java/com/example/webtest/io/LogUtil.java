@@ -7,7 +7,7 @@ public class LogUtil {
 
     //可以全局控制是否打印log日志
     private static boolean isPrintLog = true;
-    private static int LOG_MAXLENGTH = 2000;
+    private static int LOG_MAXLENGTH = 20000;
 
 
     public static void v(String msg) {
