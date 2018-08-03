@@ -76,12 +76,13 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected ArrayList<String> titleList;
 	protected HashMap<String,Integer> titleSortMap;
 	private boolean debug = false;
-	protected String mUrlList;
+	protected String mUrlList,mMinSameUrlList;
 	private String renqiUrl;
 	private int sameUrlSize;
 
 	protected void refreshSearch() {
 		mUrlList = "";
+		mMinSameUrlList = "";
 		if (null != titleSortMap) {
 			titleSortMap.clear();
 		}
@@ -663,6 +664,16 @@ public class WA_YundaFragment extends WA_BaseFragment
 			}
 		}
 
+		@JavascriptInterface
+		public void minSameRecord(String str) throws IOException
+		{
+			if (TextUtils.isEmpty(mMinSameUrlList)) {
+				mMinSameUrlList = str;
+			} else if (!mMinSameUrlList.contains(str)) {
+				mMinSameUrlList = mMinSameUrlList + "###" + str;
+			}
+		}
+
 
 		@JavascriptInterface
 		public void titleSave(String str) throws IOException
@@ -795,6 +806,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 		try {
 			SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index] + "titleSort", sortTitleMap(titleSortMap));
 			SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index]+"linkUrl", mUrlList);
+			SharedPreferencesUtils.putValue(getActivity(), TAOBAO, shops[index]+"minSameUrlList", mMinSameUrlList);
 			btn_sort_title.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
 		} catch (Exception e) {
 			LogUtil.e("sp健值错误:" + e.toString());
@@ -804,11 +816,14 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 	public void sortResult() {
 		LogUtil.e("取sp健值：" + "\n" + TAOBAO + "-" + index + "---" + shops[index]);
+		LogUtil.e("------------resultStr------------" + "\n" + TAOBAO + "-" + index + "---" + shops[index]);
 
 		String value = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "titleSort", "");
 		String urls = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "linkUrl", "");
+		String minSameUrlList = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "minSameUrlList", "");
 		String[] split = value.split("###");
 		String[] linkUrl = urls.split("###");
+		String[] minUrl = minSameUrlList.split("###");
 		if (null == titleList) {
 			titleList = new ArrayList<String>();
 		} else {
@@ -817,6 +832,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 		}
 		String str = "------------resultStr------------" + "\n";
 		String linkStr = "------------resultStr------------" + "\n";
+		String minStr = "------------resultStr------------" + "\n";
 		for (int i = 0; i < split.length; i++) {
 			titleList.add(split[i]);
 			str = str + split[i]+ "\n";
@@ -826,8 +842,14 @@ public class WA_YundaFragment extends WA_BaseFragment
 				linkStr = linkStr + linkUrl[i] + "\n";
 			}
 		}
+		for (int i = 0; i < minUrl.length; i++) {
+			if (!minStr.contains(minUrl[i])) {
+				minStr = minStr + minUrl[i] + "\n"+"-----------------------------------------------------------"+"\n";
+			}
+		}
 		LogUtil.e("sp健值：" + str);
 		LogUtil.e("sp健值：" + linkStr);
+		LogUtil.e("sp健值：" + minStr);
 	}
 
 	private void sortMap(Map map,String str) {
