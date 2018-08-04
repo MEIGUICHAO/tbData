@@ -89,6 +89,11 @@ public class WA_YundaFragment extends WA_BaseFragment
 		if (index == shops.length) {
 			index = 0;
 		}
+
+        if (index<shops.length){
+            index++;
+        }
+		btn_sort_title.setText(shops[index]);
 		if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(getActivity(), TAOBAO, shops[index] + "linkUrl", ""))) {
 			btn_sort_title.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
 		} else {
@@ -96,9 +101,6 @@ public class WA_YundaFragment extends WA_BaseFragment
 		}
 
 
-		if (index<shops.length){
-			index++;
-		}
 
 		String mIndex = et_index.getText().toString();
 		if (!TextUtils.isEmpty(mIndex)) {
@@ -847,8 +849,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 				minStr = minStr + minUrl[i] + "\n"+"-----------------------------------------------------------"+"\n";
 			}
 		}
-		LogUtil.e("sp健值：" + str);
-		LogUtil.e("sp健值：" + linkStr);
+//		LogUtil.e("sp健值：" + str);
+//		LogUtil.e("sp健值：" + linkStr);
 		LogUtil.e("sp健值：" + minStr);
 	}
 

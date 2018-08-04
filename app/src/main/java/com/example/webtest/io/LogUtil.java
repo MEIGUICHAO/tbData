@@ -7,7 +7,7 @@ public class LogUtil {
 
     //可以全局控制是否打印log日志
     private static boolean isPrintLog = true;
-    private static int LOG_MAXLENGTH = 20000;
+    private static int LOG_MAXLENGTH = 200000;
 
 
     public static void v(String msg) {
@@ -98,9 +98,47 @@ public class LogUtil {
     }
 
     public static void e(String msg) {
-        e("LogUtil", msg);
+        if (isPrintLog) {
+            int strLength = msg.length();
+            int start = 0;
+            int end = LOG_MAXLENGTH;
+            for (int i = 0; i < 100; i++) {
+                if (strLength > end) {
+                    Log.e("" + i, msg.substring(start, end));
+                    start = end;
+                    end = end + LOG_MAXLENGTH;
+                } else {
+                    Log.e("" + i, msg.substring(start, strLength));
+                    break;
+                }
+            }
+        }
     }
-    public static void e(String tagName, String msg) {
+
+
+    public static void showLogCompletion(String log,int showCount) {
+        if (log.length() > showCount) {
+            String show = log.substring(0, showCount);
+//			System.out.println(show);
+            Log.i("TAG", show + "");
+            if ((log.length() - showCount) > showCount) {//剩下的文本还是大于规定长度
+                String partLog = log.substring(showCount, log.length());
+                showLogCompletion(partLog, showCount);
+            } else {
+                String surplusLog = log.substring(showCount, log.length());
+//				System.out.println(surplusLog);
+                Log.i("TAG", surplusLog + "");
+            }
+
+        } else {
+//			System.out.println(log);
+            Log.i("TAG", log + "");
+        }
+    }
+
+
+
+        public static void e(String tagName, String msg) {
         if (isPrintLog) {
             int strLength = msg.length();
             int start = 0;

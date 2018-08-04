@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -50,6 +49,7 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 	private int titleCount;
 	private int shopCount;
 	private ArrayList<String> outputTitleList;
+	private EditText et_filter;
 
 	/**  通过静态方法实例化自动化Fragment*/
 	public static void start(Activity mContext, int containerRsID, WA_Parameters parameter)
@@ -117,6 +117,7 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		ll_title = (LinearLayout) view.findViewById(R.id.ll_title);
         et_title = (EditText) view.findViewById(R.id.et_title);
 		et_index = (EditText) view.findViewById(R.id.et_index);
+		et_filter = (EditText) view.findViewById(R.id.et_filter);
 		tv_title = (TextView) view.findViewById(R.id.tv_title);
 
 
@@ -376,136 +377,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			@Override
 			public void onClick(View v) {
 //				keywordSplite();
-				String value = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "titleSort", "");
-				String[] titles = value.split("###");
-				String resutlStr = "¥¥¥¥";
-				String result1 = "";
-				String result2 = "";
-				String result3 = "";
-				String result4 = "";
-				String result5 = "";
-				String result6 = "";
-				String result7 = "";
-				String result8 = "";
-				String result9 = "";
-				String result10 = "";
-				for (int i = 0; i < titles.length; i++) {
-					result1 = maxSubstring(titles[0], titles[i]);
-					if (!resutlStr.contains(result1)) {
-						resutlStr = resutlStr + "###" + result1;
-					}
-					result2 = maxSubstring(titles[1], titles[i]);
+				keywordAndTitle();
 
-					if (!resutlStr.contains(result2)) {
-						resutlStr = resutlStr + "###" + result2;
-					}
-					result3 = maxSubstring(titles[2], titles[i]);
-
-					if (!resutlStr.contains(result3)) {
-						resutlStr = resutlStr + "###" + result3;
-					}
-					result4 = maxSubstring(titles[3], titles[i]);
-
-					if (!resutlStr.contains(result4)) {
-						resutlStr = resutlStr + "###" + result4;
-					}
-					result5 = maxSubstring(titles[4], titles[i]);
-
-					if (!resutlStr.contains(result5)) {
-						resutlStr = resutlStr + "###" + result5;
-					}
-					result6 = maxSubstring(titles[5], titles[i]);
-
-					if (!resutlStr.contains(result6)) {
-						resutlStr = resutlStr + "###" + result6;
-					}
-					result7 = maxSubstring(titles[6], titles[i]);
-
-					if (!resutlStr.contains(result7)) {
-						resutlStr = resutlStr + "###" + result7;
-					}
-					result8 = maxSubstring(titles[7], titles[i]);
-
-					if (!resutlStr.contains(result8)) {
-						resutlStr = resutlStr + "###" + result8;
-					}
-					result9 = maxSubstring(titles[8], titles[i]);
-
-					if (!resutlStr.contains(result9)) {
-						resutlStr = resutlStr + "###" + result9;
-					}
-					result10 = maxSubstring(titles[9], titles[i]);
-
-					if (!resutlStr.contains(result10)) {
-						resutlStr = resutlStr + "###" + result10;
-					}
-				}
-				LogUtil.e(resutlStr);
-				String[] keywordStrs = resutlStr.split("###");
-				LogUtil.e(resutlStr.split("###").length + "");
-
-				ArrayList<String> list = new ArrayList<String>();
-				for (int i = 1; i < keywordStrs.length; i++) {
-					list.add(keywordStrs[i]);
-				}
-
-				//去重
-				for (int i = 0; i < list.size(); i++) {
-					for(int j = i + 1;j < list.size();j++){
-						if(list.get(i).contains(list.get(j))||list.get(j).contains(list.get(i))){
-							if (strLength(list.get(i)) > strLength(list.get(j))) {
-								list.remove(j); //remove(int index)
-							} else {
-								list.remove(i);
-							}
-							j--;            //一定要记住j--，不然会出错
-						}
-					}
-				}
-
-				//去重
-				for (int i = 0; i < list.size(); i++) {
-					for(int j = i + 1;j < list.size();j++){
-						if (!TextUtils.isEmpty(list.get(i)) && !TextUtils.isEmpty(list.get(j))) {
-
-							String samestr = maxSubstring(list.get(i), list.get(j));
-							int iStr = strLength(list.get(i));
-							int jStr = strLength(list.get(j));
-							if (!TextUtils.isEmpty(samestr)) {
-								if (iStr >= jStr && jStr < 1.5 * strLength(samestr)) {
-									String replace = list.get(j).replace(samestr, "");
-									list.remove(j);
-
-
-									list.add(j, replace);
-								} else if (iStr < 1.5 * strLength(samestr)){
-									String replace = list.get(i).replace(samestr, "");
-									list.remove(i);
-									list.add(i, replace);
-								}
-							}
-						}
-					}
-				}
-
-				String keywordStr = "";
-
-				for (int i = 0; i < list.size(); i++) {
-					if (TextUtils.isEmpty(list.get(i).trim())) {
-						list.remove(i);
-					}
-				}
-
-				for (int i = 0; i < list.size(); i++) {
-
-					if (TextUtils.isEmpty(keywordStr)) {
-						keywordStr = list.get(i) + "\n";
-					} else {
-						keywordStr = keywordStr + list.get(i) + "\n";
-					}
-				}
-				LogUtil.e(list.size() + "");
-				LogUtil.e(keywordStr);
 
 			}
 		});
@@ -555,6 +428,125 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 //				}.start();
 //			}
 //		});
+	}
+
+	private void keywordAndTitle() {
+		String value = SharedPreferencesUtils.getValue(getActivity(), "TAOBAO", shops[index] + "titleSort", "");
+		String[] titles = value.split("###");
+		String resutlStr = "¥¥¥¥";
+		String result1 = "";
+		String result2 = "";
+		String result3 = "";
+		String result4 = "";
+		String result5 = "";
+		String result6 = "";
+		String result7 = "";
+		String result8 = "";
+		String result9 = "";
+		String result10 = "";
+		for (int i = 0; i < titles.length; i++) {
+			for (int j = i+1; j < titles.length; j++) {
+				result1 = maxSubstring(titles[i], titles[j]);
+
+				if (!resutlStr.contains(result1)) {
+					resutlStr = resutlStr + "###" + result1;
+				}
+			}
+        }
+		LogUtil.e(resutlStr);
+		String[] keywordStrs = resutlStr.split("###");
+		LogUtil.e(resutlStr.split("###").length + "");
+
+		ArrayList<String> list = new ArrayList<String>();
+		for (int i = 1; i < keywordStrs.length; i++) {
+            list.add(keywordStrs[i]);
+        }
+
+		//去重
+		for (int i = 0; i < list.size(); i++) {
+            for(int j = i + 1;j < list.size();j++){
+                if(list.get(i).contains(list.get(j))||list.get(j).contains(list.get(i))){
+                    if (strLength(list.get(i)) > strLength(list.get(j))) {
+                        list.remove(j); //remove(int index)
+                    } else {
+                        list.remove(i);
+                    }
+                    j--;            //一定要记住j--，不然会出错
+                }
+            }
+        }
+
+		//去重
+		for (int i = 0; i < list.size(); i++) {
+            for(int j = i + 1;j < list.size();j++){
+                if (!TextUtils.isEmpty(list.get(i)) && !TextUtils.isEmpty(list.get(j))) {
+
+                    String samestr = maxSubstring(list.get(i), list.get(j));
+                    int iStr = strLength(list.get(i));
+                    int jStr = strLength(list.get(j));
+                    if (!TextUtils.isEmpty(samestr)) {
+                        if (iStr >= jStr && jStr < 1.5 * strLength(samestr)) {
+                            String replace = list.get(j).replace(samestr, "");
+                            list.remove(j);
+
+
+                            list.add(j, replace);
+                        } else if (iStr < 1.5 * strLength(samestr)){
+                            String replace = list.get(i).replace(samestr, "");
+                            list.remove(i);
+                            list.add(i, replace);
+                        }
+                    }
+                }
+            }
+        }
+
+		String keywordStr = "";
+		String filter = et_filter.getText().toString();
+
+		Iterator<String> it = list.iterator();
+		while (it.hasNext()) {
+			String str = it.next();
+			if (TextUtils.isEmpty(str.trim())||filter.contains(str)) {
+				it.remove();
+			}
+		}
+
+
+		for (int i = 0; i < list.size(); i++) {
+
+            if (TextUtils.isEmpty(keywordStr)) {
+                keywordStr = list.get(i) + "\n";
+            } else {
+                keywordStr = keywordStr + list.get(i) + "\n";
+            }
+        }
+		LogUtil.e(list.size() + "");
+		LogUtil.e(keywordStr);
+		String templeStr = "";
+		String titleOutPut1 = "---------title-----------" + "\n";
+		String titleOutPut2 = "---------title-----------" + "\n";
+		for (int i = 0; i < 50; i++) {
+            int[] ints = randomArray(list.size()-1);
+            templeStr = "";
+            for (int j = 0; j < list.size(); j++) {
+                if (strLength(templeStr) < 100) {
+                    if (ints[j] < list.size()) {
+                        templeStr = templeStr + list.get(ints[j]);
+                    }
+                } else {
+                    break;
+                }
+            }
+			if (i <= 24) {
+				titleOutPut1 = titleOutPut1 + templeStr + "\n";
+			} else {
+				titleOutPut2 = titleOutPut2 + templeStr + "\n";
+			}
+		}
+
+		LogUtil.e(titleOutPut1);
+		LogUtil.e(titleOutPut2);
 	}
 
 	private void keywordSplite() {
@@ -626,7 +618,7 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		if (null != keywordSplit) {
 			for (int h = 0; h < keywordSplit.length; h++) {
 				for (int i = 0; i < time; i++) {
-					int[] ints = randomArray();
+					int[] ints = randomArray(mTitleList.size());
 					Random rand = new Random();
 					int num = rand.nextInt(); //int范围类的随机数
 					num = rand.nextInt(15); //生成0-100以内的随机数
@@ -710,6 +702,9 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 	}
 
 	public int strLength(String value) {
+		if (TextUtils.isEmpty(value)) {
+			return 0;
+		}
 		int valueLength = 0;
 		String chinese = "[\u0391-\uFFE5]";
 		/* 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1 */
@@ -748,10 +743,10 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			switch (v.getId()) {
 				case R.id.btn_sort_result:
 					sortResult();
-
+					keywordAndTitle();
 					break;
 				case R.id.btn_sort_title:
-					sortTitle();
+//					sortTitle();
 					break;
 			}
 		} catch (Exception e) {
@@ -798,11 +793,17 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		}
 	}
 
-	public int[] randomArray(){
+	public int[] randomArray(int size){
 		int splitNum = 30;
 		int max = mTitleList.size() - 1;
+		if (null == mTitleList || mTitleList.size() < 1) {
+			max = size;
+		}
 		int len = max - 0 + 1;
 
+		if (splitNum > len) {
+			splitNum = len;
+		}
 		if(max < 0 || splitNum > len){
 			return null;
 		}

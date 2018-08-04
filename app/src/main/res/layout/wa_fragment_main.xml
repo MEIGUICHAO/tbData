@@ -8,6 +8,12 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_index"
+            android:inputType="number"
+            android:layout_width="100dp"
+            android:layout_height="38dp" />
+
         <Button
             android:id="@+id/btn_refresh"
             android:layout_weight="1"
@@ -27,6 +33,7 @@
             android:id="@+id/btn_et_displays"
             android:layout_weight="1"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:text="显示" />
 
@@ -34,6 +41,7 @@
         <Button
             android:id="@+id/btn_gosearch"
             android:layout_weight="1"
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="人气" />
@@ -42,6 +50,7 @@
             android:id="@+id/btn_getchecked"
             android:layout_weight="1"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:text="销量" />
 
@@ -65,20 +74,22 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/et_index"
-            android:inputType="number"
-            android:layout_width="100dp"
-            android:layout_height="38dp" />
+            android:id="@+id/et_filter"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:layout_width="0dp" />
+
+
         <Button
             android:id="@+id/btn_sort_title"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="降序" />
 
         <Button
             android:id="@+id/btn_sort_result"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="排序结果" />
