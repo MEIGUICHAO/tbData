@@ -2,6 +2,7 @@ package com.example.webtest.base;
 
 import android.app.Instrumentation;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -89,6 +91,9 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private int goNextIndex = 0;
 	private String olderPageUrl;
 	private int debugSize = 2;
+	protected String injectJS;
+	private int METHOD_AFTER_LOAD;
+
 
 	protected void refreshSearch() {
 		mUrlList = "";
@@ -144,11 +149,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 	//销量
 	protected void saleDesc() {
 		loadMyUrl(listWeb.getUrl()+"&sort=sale-desc");
-		renqiUrl = listWeb.getUrl().replace("&sort=sale-desc", "&sort=renqi");
-		olderPageUrl = renqiUrl;
-		LogUtil.e("init_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
+		METHOD_AFTER_LOAD = Constant.AFTER_SALES_DESC;
 
-		handlerJs("getTitleList();",5000);
 	}
 	protected void goSearchWord() {
 
@@ -812,7 +814,11 @@ public class WA_YundaFragment extends WA_BaseFragment
                             sortTitle();
 
 							goNextIndex++;
-							if (index != shops.length - 1&&goNextIndex > 8) {
+							if (goNextIndex > 8) {
+								if (index == shops.length - 1) {
+									index = 0;
+									return;
+								}
 								refreshSearch();
 								goSearch(shops[index]);
 							} else {
@@ -822,9 +828,15 @@ public class WA_YundaFragment extends WA_BaseFragment
 									@Override
 									public void run() {
 										goNextPage();
-//										olderPageUrl = listWeb.getUrl();
-										LogUtil.e("after_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
-//										biao1();
+										handler.postDelayed(new Runnable() {
+											@Override
+											public void run() {
+
+												olderPageUrl = listWeb.getUrl();
+												LogUtil.e("after_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
+												biao1();
+											}
+										}, 3000);
 									}
 								}, 3000);
 							}
@@ -1038,6 +1050,38 @@ public class WA_YundaFragment extends WA_BaseFragment
 			inst.sendKeyDownUpSync( KeyCode );
 		} catch (Exception e) {
 			Log.e("Exception：", e.toString());
+		}
+	}
+
+
+
+
+	/** ListWebView加载完注入基本JS函数 */
+	public class MyListWebViewClient extends WebViewClient
+	{
+		@Override
+		public void onPageFinished(WebView view, String url)
+		{
+			view.loadUrl("javascript:" + injectJS);
+			switch (METHOD_AFTER_LOAD) {
+				case Constant.AFTER_SALES_DESC:
+					renqiUrl = listWeb.getUrl().replace("&sort=sale-desc", "&sort=renqi");
+					olderPageUrl = renqiUrl;
+					LogUtil.e("init_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
+
+					handlerJs("getTitleList();");
+					METHOD_AFTER_LOAD = Constant.RENQI_BEGIN;
+					break;
+			}
+			LogUtil.e("urlIndex:!!!!!!@@@@@####$");
+
+			super.onPageFinished(view, url);
+		}
+
+		@Override
+		public void onPageStarted(WebView view, String url, Bitmap favicon)
+		{
+			super.onPageStarted(view, url, favicon);
 		}
 	}
 

@@ -40,7 +40,6 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 
 	private LocalMethod mLocalMethod;
 	private WA_Parameters parameter;
-	private String injectJS;
 	private ArrayList<String> mTitleList = new ArrayList<String>();
 	private TextView tv_title;
 	private String mTitleStr = "---";
@@ -794,24 +793,6 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 	}
 
 
-
-	/** ListWebView加载完注入基本JS函数 */
-	private class MyListWebViewClient extends WebViewClient
-	{
-		@Override
-		public void onPageFinished(WebView view, String url)
-		{
-			view.loadUrl("javascript:" + injectJS);
-
-			super.onPageFinished(view, url);
-		}
-
-		@Override
-		public void onPageStarted(WebView view, String url, Bitmap favicon)
-		{
-			super.onPageStarted(view, url, favicon);
-		}
-	}
 
 	/** DetailWebView加载完注入基本JS函数并且关闭对话框 */
 	private class MyDetailWebViewClient extends WebViewClient
