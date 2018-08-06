@@ -80,9 +80,16 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private String renqiUrl;
 	private int sameUrlSize;
 
+	protected ArrayList<String> mTempleList;
+	protected String mTempleListKeywordStr;
+	public boolean CheckAll = false;
+	private String minUrlsRecord;
+
 	protected void refreshSearch() {
 		mUrlList = "";
-		mMinSameUrlList = "";
+		if (!CheckAll) {
+			minUrlsRecord = "";
+		}
 		if (null != titleSortMap) {
 			titleSortMap.clear();
 		}
@@ -107,6 +114,11 @@ public class WA_YundaFragment extends WA_BaseFragment
 			index = Integer.parseInt(mIndex);
 		}
 		btnRefresh.setText(index + "/" + shops.length);
+
+		if (null != mTempleList) {
+			mTempleList.clear();
+		}
+		mTempleListKeywordStr = "";
 	}
 
 	protected enum SearchType
@@ -667,13 +679,29 @@ public class WA_YundaFragment extends WA_BaseFragment
 		}
 
 		@JavascriptInterface
-		public void minSameRecord(String str) throws IOException
+		public void minSameRecord(String str,String minUrl) throws IOException
 		{
-			if (TextUtils.isEmpty(mMinSameUrlList)) {
-				mMinSameUrlList = str;
-			} else if (!mMinSameUrlList.contains(str)) {
-				mMinSameUrlList = mMinSameUrlList + "###" + str;
+			boolean jixu = true;
+			if (TextUtils.isEmpty(minUrl)) {
+				minUrlsRecord = minUrl;
+			} else if (!minUrlsRecord.contains(minUrl)) {
+				minUrlsRecord = minUrlsRecord + "###" + str;
+			} else {
+				jixu = false;
 			}
+			if (jixu) {
+				if (TextUtils.isEmpty(mMinSameUrlList)) {
+					mMinSameUrlList = str;
+				} else if (!mMinSameUrlList.contains(str)) {
+					mMinSameUrlList = mMinSameUrlList + "###" + str;
+				}
+			}
+		}
+
+		@JavascriptInterface
+		public void minPricesUrl(String minPricesUrl) throws IOException
+		{
+
 		}
 
 
@@ -839,14 +867,15 @@ public class WA_YundaFragment extends WA_BaseFragment
 			titleList.add(split[i]);
 			str = str + split[i]+ "\n";
 		}
-		for (int i = 0; i < linkUrl.length; i++) {
-			if (!linkStr.contains(linkUrl[i])) {
-				linkStr = linkStr + linkUrl[i] + "\n";
-			}
-		}
+//		for (int i = 0; i < linkUrl.length; i++) {
+//			if (!linkStr.contains(linkUrl[i])) {
+//				linkStr = linkStr + linkUrl[i] + "\n";
+//			}
+//		}
 		for (int i = 0; i < minUrl.length; i++) {
-			if (!minStr.contains(minUrl[i])) {
-				minStr = minStr + minUrl[i] + "\n"+"-----------------------------------------------------------"+"\n";
+			String[] url = minUrl[i].split("minPricesUrl:");
+			if (!minStr.contains(url[1])) {
+				minStr = minStr + minUrl[i] + "\n" + "-----------------------------------------------------------" + "\n";
 			}
 		}
 //		LogUtil.e("sp健值：" + str);

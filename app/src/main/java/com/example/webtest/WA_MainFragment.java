@@ -297,11 +297,12 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		btn_et_displays.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (ll_title.getVisibility() == View.VISIBLE) {
-					ll_title.setVisibility(View.GONE);
-				} else {
-					ll_title.setVisibility(View.VISIBLE);
-				}
+//				if (ll_title.getVisibility() == View.VISIBLE) {
+//					ll_title.setVisibility(View.GONE);
+//				} else {
+//					ll_title.setVisibility(View.VISIBLE);
+//				}
+				getLastTitle(mTempleList, mTempleListKeywordStr);
 
 			}
 		});
@@ -351,6 +352,7 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			@Override
 			public void onClick(View view) {
 				biao1();
+
 			}
 		});
 		btn_str_result.setOnClickListener(new View.OnClickListener() {
@@ -377,7 +379,13 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			@Override
 			public void onClick(View v) {
 //				keywordSplite();
-				keywordAndTitle();
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						keywordAndTitle();
+					}
+				}).start();
+
 
 
 			}
@@ -444,11 +452,15 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		String result8 = "";
 		String result9 = "";
 		String result10 = "";
-		for (int i = 0; i < titles.length; i++) {
-			for (int j = i+1; j < titles.length; j++) {
+		int length = titles.length;
+		if (length > 200) {
+			length = 200;
+		}
+		for (int i = 0; i < length; i++) {
+			for (int j = i+1; j < length; j++) {
 				result1 = maxSubstring(titles[i], titles[j]);
 
-				if (!resutlStr.contains(result1)) {
+				if (!TextUtils.isEmpty(result1)&&!resutlStr.contains(result1)) {
 					resutlStr = resutlStr + "###" + result1;
 				}
 			}
@@ -468,10 +480,14 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
                 if(list.get(i).contains(list.get(j))||list.get(j).contains(list.get(i))){
                     if (strLength(list.get(i)) > strLength(list.get(j))) {
                         list.remove(j); //remove(int index)
+						j--;
                     } else {
                         list.remove(i);
+						if (i != 0) {
+							i--;
+						}
                     }
-                    j--;            //一定要记住j--，不然会出错
+                                //一定要记住j--，不然会出错
                 }
             }
         }
@@ -501,6 +517,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
             }
         }
 
+
+
 		String keywordStr = "";
 		String filter = et_filter.getText().toString();
 
@@ -512,7 +530,17 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			}
 		}
 
+		mTempleList = list;
+		mTempleListKeywordStr = keywordStr;
 
+		try {
+			getLastTitle(list, keywordStr);
+		} catch (Exception e) {
+
+		}
+	}
+
+	private void getLastTitle(ArrayList<String> list, String keywordStr) {
 		for (int i = 0; i < list.size(); i++) {
 
             if (TextUtils.isEmpty(keywordStr)) {
@@ -530,13 +558,15 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
             int[] ints = randomArray(list.size()-1);
             templeStr = "";
             for (int j = 0; j < list.size(); j++) {
-                if (strLength(templeStr) < 100) {
+                if (strLength(templeStr) + strLength(list.get(ints[j]))< 120) {
                     if (ints[j] < list.size()) {
                         templeStr = templeStr + list.get(ints[j]);
                     }
-                } else {
-                    break;
-                }
+				} else if (strLength(templeStr) < 100) {
+					continue;
+				} else {
+					break;
+				}
             }
 			if (i <= 24) {
 				titleOutPut1 = titleOutPut1 + templeStr + "\n";
@@ -742,8 +772,15 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		try {
 			switch (v.getId()) {
 				case R.id.btn_sort_result:
-					sortResult();
-					keywordAndTitle();
+
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+
+							sortResult();
+							keywordAndTitle();
+						}
+					}).start();
 					break;
 				case R.id.btn_sort_title:
 //					sortTitle();

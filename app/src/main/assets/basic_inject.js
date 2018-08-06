@@ -125,7 +125,7 @@ function check(url){
         localMethod.sameResult(text);
         var minSameRecord = "maxPrices:"+maxPrices+",averPrices:"+accDiv(averPrices,averNum)+",minPrices:"+minPrices+"\n"+"sameUrl:"+url+"\n"+"minPricesUrl:"+minPricesUrl;
         localMethod.sameResultRecord(url);
-        localMethod.minSameRecord(minSameRecord);
+        localMethod.minSameRecord(minSameRecord,minPricesUrl);
         localMethod.JI_LOG(minSameRecord);
 
 
