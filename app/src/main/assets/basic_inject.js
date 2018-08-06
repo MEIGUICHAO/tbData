@@ -67,16 +67,7 @@ function relativeTitle(){
 function nextPage(){
     var btn = document.getElementsByClassName("btn J_Submit");
     btn[0].click();
-//    var text = "";
-//    for(var i = 0;i<as.length;i++){
-//        text = text + i + "\n"+",innerText:"+as[i].innerText+
-////        ",innerHTML:"+as[i].innerHTML+
-//        ",value:"+as[i].value + ",as:"+as[i]+"\n";
-//    }
-//    localMethod.JI_LOG(text);
-//    findForClick(as,"q");
 }
-
 
 
 
@@ -118,9 +109,7 @@ function check(url){
     var minPricesUrl = "";
 
     if(paids.length>30&&pay>2){
-                            localMethod.JI_LOG("!!!!!1111");
         for(var i=0;i<itemnames.length;i++){
-                        localMethod.JI_LOG("!!!!!222222");
             if(paids[i].innerText.replace("人付款","")>10){
                 var price = prices[i].innerText.replace("￥","");
                 averPrices = accAdd(averPrices,price);
@@ -128,11 +117,13 @@ function check(url){
                 if(parseFloat(price)>parseFloat(maxPrices)){
                     maxPrices = price;
                 }
-                                        localMethod.JI_LOG("!!!!!33333");
                 if(parseFloat(price)<parseFloat(minPrices)){
                     minPrices = price;
                     minPricesUrl = mUrl[i].getElementsByTagName("a")[0];
+
                 }
+
+
                 var templeAs = mUrl[i].getElementsByTagName("a");
                 localMethod.JI_LOG("!!!!!!"+templeAs.length);
                 localMethod.JI_LOG(",innerText:"+templeAs[0].innerText+
@@ -146,10 +137,9 @@ function check(url){
             }
         }
         localMethod.sameResult(text);
-                localMethod.JI_LOG(minPricesUrl);
         var minSameRecord = "maxPrices:"+maxPrices+",averPrices:"+accDiv(averPrices,averNum)+",minPrices:"+minPrices+"\n"+"sameUrl:"+url+"\n"+"minPricesUrl:"+minPricesUrl;
         localMethod.sameResultRecord(url);
-        localMethod.minSameRecord(minSameRecord,minPricesUrl);
+        localMethod.minSameRecord(minSameRecord,minPricesUrl+"");
         localMethod.JI_LOG(minSameRecord);
 
 
