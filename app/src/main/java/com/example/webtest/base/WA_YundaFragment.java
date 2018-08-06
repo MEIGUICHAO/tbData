@@ -75,18 +75,22 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected String sameUlrs = "";
 	protected ArrayList<String> titleList;
 	protected HashMap<String,Integer> titleSortMap;
-	private boolean debug = false;
+	private boolean debug = true;
 	protected String mUrlList,mMinSameUrlList;
 	private String renqiUrl;
 	private int sameUrlSize;
 
 	protected ArrayList<String> mTempleList;
-	protected String mTempleListKeywordStr;
 	public boolean CheckAll = false;
 	private String minUrlsRecord;
+	private int goNextIndex;
+	private String olderPageUrl;
+	private int mSize;
 
 	protected void refreshSearch() {
 		mUrlList = "";
+		goNextIndex = 0;
+		mMinSameUrlList = "";
 		if (!CheckAll) {
 			minUrlsRecord = "";
 		}
@@ -118,7 +122,6 @@ public class WA_YundaFragment extends WA_BaseFragment
 		if (null != mTempleList) {
 			mTempleList.clear();
 		}
-		mTempleListKeywordStr = "";
 	}
 
 	protected enum SearchType
@@ -130,7 +133,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 	//人气
 	protected void goSearchClick() {
-		loadMyUrl(listWeb.getUrl()+"&sort=renqi");
+		olderPageUrl = listWeb.getUrl() + "&sort=renqi";
+		loadMyUrl(olderPageUrl);
 //        goSearch(shops[index]);
 	}
 	//销量
@@ -156,6 +160,10 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 //		handlerJs("check();");
 		handlerJs("check(\"" + url + "\");");
+	}
+
+	protected void goNextPage() {
+		handlerJs("nextPage();");
 	}
 
 	protected void goSearch(final String search) {
@@ -730,8 +738,6 @@ public class WA_YundaFragment extends WA_BaseFragment
 						if (index != shops.length - 1) {
 							Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
 							sortTitle();
-							refreshSearch();
-							goSearch(shops[index]);
 						}
 
 					}
@@ -760,50 +766,45 @@ public class WA_YundaFragment extends WA_BaseFragment
 		}
 
 		if (debug) {
-			for (int i = 0; i < 10; i++) {
-				if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
-					if (i > 0) {
-						lastUrl = urlList.get(i - 1);
-					} else {
-						lastUrl = urlList.get(0);
-					}
-					handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
-					sameUlrs = sameUlrs + "------" + urlList.get(i);
-
-				}
-			}
+			mSize = 10;
 		} else {
-			for (int i = 0; i < urlList.size(); i++) {
-				if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
-					if (i > 0) {
-						lastUrl = urlList.get(i - 1);
-					} else {
-						lastUrl = urlList.get(0);
-					}
-					handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
-					sameUlrs = sameUlrs + "------" + urlList.get(i);
-					if (i == urlList.size() - 1) {
-						handler.postDelayed(new Runnable() {
-							@Override
-							public void run() {
-
-								sortTitle();
-								if (index != shops.length - 1) {
-									refreshSearch();
-									goSearch(shops[index]);
-								}
-							}
-						}, 3000*i+2000);
-					}
-
-				}
-			}
-
+			mSize = urlList.size();
 		}
+		afterSameUrl(mSize,lastUrl, urlList);
+
+
 //		LogUtil.e("resultStr-----------end");
 
 	}
 
+	private void afterSameUrl(int mSize, String lastUrl, ArrayList<String> urlList) {
+		for (int i = 0; i < mSize; i++) {
+			if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
+				if (i > 0) {
+					lastUrl = urlList.get(i - 1);
+				} else {
+					lastUrl = urlList.get(0);
+				}
+
+				handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
+				sameUlrs = sameUlrs + "------" + urlList.get(i);
+				if (i == mSize - 1) {
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+
+							sortTitle();
+
+							if (index != shops.length - 1 && goNextIndex > 8) {
+								refreshSearch();
+								goSearch(shops[index]);
+							}
+						}
+					}, 3000*i+2000);
+				}
+			}
+		}
+	}
 
 
 	public void loadMyUrl(String url) {
@@ -874,13 +875,25 @@ public class WA_YundaFragment extends WA_BaseFragment
 //		}
 		for (int i = 0; i < minUrl.length; i++) {
 			String[] url = minUrl[i].split("minPricesUrl:");
-			if (!minStr.contains(url[1])) {
+			if (!minUrlsRecord.contains(url[1])) {
 				minStr = minStr + minUrl[i] + "\n" + "-----------------------------------------------------------" + "\n";
 			}
 		}
 //		LogUtil.e("sp健值：" + str);
 //		LogUtil.e("sp健值：" + linkStr);
 		LogUtil.e("sp健值：" + minStr);
+
+		goNextIndex++;
+		if (goNextIndex > 8) {
+			refreshSearch();
+			goSearch(shops[index]);
+		} else {
+			loadMyUrl(olderPageUrl);
+			goNextPage();
+			olderPageUrl = listWeb.getUrl();
+			biao1();
+		}
+
 	}
 
 	private void sortMap(Map map,String str) {

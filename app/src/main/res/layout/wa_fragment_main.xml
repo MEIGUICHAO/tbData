@@ -49,9 +49,8 @@
             android:id="@+id/btn_getchecked"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:text="销量" />
+            android:text="next" />
 
         <Button
             android:id="@+id/btn_search"

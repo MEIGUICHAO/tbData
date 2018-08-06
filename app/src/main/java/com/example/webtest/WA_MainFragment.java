@@ -273,7 +273,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			@Override
 			public void onClick(View view) {
 //				goGetChecked();
-				saleDesc();
+//				saleDesc();
+				goNextPage();
 			}
 		});
 		btn_display.setOnClickListener(new View.OnClickListener() {
@@ -302,7 +303,7 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 //				} else {
 //					ll_title.setVisibility(View.VISIBLE);
 //				}
-				getLastTitle(mTempleList, mTempleListKeywordStr);
+				getLastTitle(mTempleList);
 
 			}
 		});
@@ -519,6 +520,18 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 
 
 
+
+		mTempleList = list;
+
+		try {
+			getLastTitle(list);
+		} catch (Exception e) {
+
+		}
+	}
+
+	private void getLastTitle(ArrayList<String> list) {
+
 		String keywordStr = "";
 		String filter = et_filter.getText().toString();
 
@@ -529,18 +542,6 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 				it.remove();
 			}
 		}
-
-		mTempleList = list;
-		mTempleListKeywordStr = keywordStr;
-
-		try {
-			getLastTitle(list, keywordStr);
-		} catch (Exception e) {
-
-		}
-	}
-
-	private void getLastTitle(ArrayList<String> list, String keywordStr) {
 		for (int i = 0; i < list.size(); i++) {
 
             if (TextUtils.isEmpty(keywordStr)) {
