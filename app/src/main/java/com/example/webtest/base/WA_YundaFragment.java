@@ -91,6 +91,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private int goNextIndex = 0;
 	private String olderPageUrl;
 	private int debugSize = 2;
+	private int pageSize = 1;
 	protected String injectJS;
 	private int METHOD_AFTER_LOAD = -1;
 	private String[] oldPageUrlStr = {"0", "44", "88", "132", "176", "220", "264", "308", "352", "392"};
@@ -826,7 +827,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 							sortTitle();
 
 							goNextIndex++;
-							if (goNextIndex > 8) {
+							if (goNextIndex > pageSize) {
 								if (index == shops.length - 1) {
 									index = 0;
 									return;
@@ -842,7 +843,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 								if (goNextIndex == 1) {
 									olderPageUrl = olderPageUrl + "&bcoffset=0&p4ppushleft=%2C44&s=44";
-								} else if (goNextIndex < 8) {
+								} else if (goNextIndex < pageSize) {
 									olderPageUrl = olderPageUrl.replace("4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex - 1], "4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex]);
 								}
 								LogUtil.e("before_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
