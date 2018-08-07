@@ -1,10 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="classify">
-        <item>连衣裙</item>
-        <item>水晶鞋</item>
+
+        <!--<item>无纺布墙纸</item>-->
+        <!--<item>浴室柜组合</item>-->
+        <!--<item>PVC墙纸</item>-->
+        <!--<item>仿古砖（包括文化石）</item>-->
+        <!--<item>普通坐便器</item>-->
+        <!--<item>釉面砖</item>-->
+        <!--<item>淋浴花洒龙头(套装)</item>-->
+        <!--<item>定制壁画</item>-->
+        <!--<item>其它卫浴配件</item>-->
+        <!--<item>水槽套餐</item>-->
+        <!--<item>地漏</item>-->
+        <!--<item>浴巾架毛巾架</item>-->
+        <!--<item>面盆龙头</item>-->
+        <!--<item>厨房龙头</item>-->
+        <!--<item>浴室镜</item>-->
+        <!--<item>多功能浴霸</item>-->
+        <!--<item>瓷砖背景墙</item>-->
+        <!--<item>浴室柜</item>-->
+        <!--<item>玻化砖</item>-->
+        <!--<item>卫浴置物架</item>-->
+        <!--<item>台上盆</item>-->
+        <!--<item>墙布壁布布面墙纸</item>-->
 
 
+
+
+        <!--<item>洗衣机龙头</item>-->
+        <!--<item>一体智能坐便器</item>-->
+        <!--<item>卷纸器纸巾架</item>-->
+        <!--<item>进水软管</item>-->
+        <!--<item>挂钩挂衣钩</item>-->
+        <!--<item>整体淋浴房</item>-->
+        <!--<item>座便器配件</item>-->
+        <!--<item>花洒配件</item>-->
+        <!--<item>马赛克</item>-->
+        <!--<item>置物架</item>-->
+        <!--<item>角阀</item>-->
+        <!--<item>挂墙式洗脸盆</item>-->
+        <!--<item>脸盆配用件</item>-->
+        <!--<item>普通坐便盖板</item>-->
+        <!--<item>床头套</item>-->
+        <!--<item>通体砖</item>-->
+        <!--<item>浴缸淋浴龙头</item>-->
+        <!--<item>背景墙软包</item>-->
+        <!--<item>普通浴缸</item>-->
+        <!--<item>拉篮</item>-->
+        <!--<item>盆、台一体成型式台盆</item>-->
+        <!--<item>水槽下水器</item>-->
+        <!--<item>净身妇洗器</item>-->
+        <!--<item>毛巾杆毛巾挂</item>-->
+        <!--<item>蹲便器</item>-->
+        <!--<item>智能坐便盖板</item>-->
+        <!--<item>厨卫龙头配件</item>-->
+        <!--<item>纯纸墙纸</item>-->
+        <!--<item>浴室镜柜</item>-->
+        <!--<item>台下盆</item>-->
+        <!--<item>沥水篮</item>-->
+        <!--<item>立柱盆</item>-->
+        <!--<item>淋浴房配件</item>-->
+        <!--<item>拖把池</item>-->
+        <!--<item>伸缩晾衣架</item>-->
+        <!--<item>钢丝绳</item>-->
+        <!--<item>花片</item>-->
+        <!--<item>卫浴水箱</item>-->
+        <!--<item>过滤器净水器</item>-->
+        <!--<item>抛晶砖</item>-->
+
+
+        <item>腰线</item>
+        <item>地线</item>
+        <item>灯暖式浴霸</item>
+        <item>空气净化器</item>
+        <item>蹲便器配件</item>
+        <item>按摩浴缸</item>
+        <item>水槽单品</item>
+        <item>升降晾衣架</item>
+        <item>浴室边柜</item>
+        <item>其它类瓷砖</item>
+        <item>皂液器</item>
+        <item>活性炭竹炭包</item>
+        <item>干发器酒店电吹风</item>
+        <item>浴室扶手</item>
+        <item>浴室角架</item>
+        <item>拖把池龙头</item>
+        <item>微晶石</item>
+        <item>半嵌入式洗脸盆</item>
+        <item>转角</item>
+        <item>其它材质类墙纸</item>
+        <item>风暖式浴霸</item>
+        <item>肥皂盒皂碟</item>
+        <item>固定式晾衣架</item>
+        <item>普通小便斗</item>
+        <item>其它厨房配用件</item>
+        <item>支架挂钩</item>
+
+
+
+        <item>刀架</item>
+        <item>美容镜</item>
+        <item>微波炉支架</item>
+        <item>普通冲水阀</item>
+        <item>卫浴五金套件</item>
+        <item>感应冲水器</item>
+        <item>卫浴五金挂件套餐</item>
+        <item>厨用垃圾桶</item>
+        <item>马桶刷架</item>
+        <item>甲醛检测剂自测盒</item>
+        <item>烘手器</item>
+        <item>一体感应式小便斗</item>
+        <item>感应龙头</item>
+        <item>浴缸配件</item>
+        <item>手摇器</item>
+        <item>锅盖架</item>
+        <item>杯架漱口杯</item>
+        <item>水槽皂液器</item>
+        <item>米桶</item>
+        <item>毛巾环</item>
+        <item>马桶刷</item>
+        <item>小便器配件</item>
+        <item>甲醛清除剂</item>
+        <item>台上艺术碗盆</item>
+        <item>厨房挂件套餐</item>
+        <item>顶座</item>
+        <item>沥水板</item>
 
 
     </string-array>

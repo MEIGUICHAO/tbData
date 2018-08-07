@@ -77,7 +77,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected String sameUlrs = "";
 	protected ArrayList<String> titleList;
 	protected HashMap<String,Integer> titleSortMap;
-	private boolean debug = true;
+	private boolean debug = false;
 	protected String mUrlList,mMinSameUrlList;
 	private String renqiUrl;
 	private int sameUrlSize;
@@ -90,14 +90,19 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 	private int goNextIndex = 0;
 	private String olderPageUrl;
-	private int debugSize = 2;
-	private int pageSize = 1;
+	private int debugSize = 5;
+	private int pageSize = 8;
 	protected String injectJS;
 	private int METHOD_AFTER_LOAD = -1;
 	private String[] oldPageUrlStr = {"0", "44", "88", "132", "176", "220", "264", "308", "352", "392"};
+	private ArrayList<String> sameLinkList;
+    private int sameLinkIndex;
+	private int erreorCheck;
+	private boolean isErreorCheck;
 
 
 	protected void refreshSearch() {
+		isErreorCheck = false;
 		mUrlList = "";
 		mMinSameUrlList = "";
 		goNextIndex = 0;
@@ -168,7 +173,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 		handlerJs("goGetChecked();");
 	}
 	protected void check(String url) {
-
+		erreorCheck = 0;
 //		handlerJs("check();");
 		handlerJs("check(\"" + url + "\");");
 	}
@@ -217,8 +222,11 @@ public class WA_YundaFragment extends WA_BaseFragment
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				LogUtil.e("llllllllaaaaaaaaa3333333");
 				loadMyUrl(url);
+				LogUtil.e("llllllllaaaaaaaaa7777777");
 				check(lastUrl);
+				LogUtil.e("llllllllaaaaaaaaa8888888");
 				//TODO
 
 			}
@@ -725,18 +733,24 @@ public class WA_YundaFragment extends WA_BaseFragment
 			} else if (!mMinSameUrlList.contains(str)) {
 				mMinSameUrlList = mMinSameUrlList + "###" + str;
 			}
-//			boolean jixu = true;
-//			if (TextUtils.isEmpty(minUrl)) {
-//				minUrlsRecord = minUrl;
-//			} else if (!minUrlsRecord.contains(minUrl)) {
-//				minUrlsRecord = minUrlsRecord + "###" + str;
-//			} else {
-//				jixu = false;
-//			}
-//			if (jixu) {
-//			}
+
 		}
 
+		@JavascriptInterface
+		public void afterSameResult() throws IOException
+		{
+
+			LogUtil.e("llllllllaaaaaaaaa");
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					nextSameUrl();
+				}
+			}, 2000);
+
+
+		}
 		@JavascriptInterface
 		public void minPricesUrl(String minPricesUrl) throws IOException
 		{
@@ -766,22 +780,44 @@ public class WA_YundaFragment extends WA_BaseFragment
 				@Override
 				public void run() {
 					if (array.length < 1) {
-						if (index != shops.length - 1) {
-							Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
-							sortTitle();
-							refreshSearch();
-							goSearch(shops[index]);
+						goNextIndex++;
+						if (goNextIndex > pageSize) {
+							nextShop();
+						} else {
+							sameNextPage();
 						}
 
-					}
-					try {
-						getSameStytleResult(array);
-					} catch (Exception e) {
+					} else {
+						try {
+							getSameStytleResult(array);
+						} catch (Exception e) {
 
+						}
 					}
 
 				}
 			});
+		}
+	}
+
+	private void nextShop() {
+		if (index != shops.length - 1 && goNextIndex >= pageSize) {
+			Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
+			sortTitle();
+			refreshSearch();
+			goSearch(shops[index]);
+		} else {
+			sameNextPage();
+		}
+	}
+
+	private void nextSameUrl() {
+		sameLinkIndex++;
+		LogUtil.e("llllllllaaaaaaaaa:" + sameLinkIndex + ",size:" + mTempleSize);
+		if (sameLinkIndex < mTempleSize) {
+			foreachSameLink(sameLinkIndex);
+		} else {
+			nextShop();
 		}
 	}
 
@@ -803,62 +839,72 @@ public class WA_YundaFragment extends WA_BaseFragment
 		} else {
 			mTempleSize = urlList.size();
 		}
-		afterSameUrl(urlList);
+		sameLinkList = urlList;
+		sameLinkIndex = 0;
+		erreorCheck = 0;
+		isErreorCheck = true;
+		afterSameUrl();
 //		LogUtil.e("resultStr-----------end");
 
 	}
 
-	private void afterSameUrl(ArrayList<String> urlList) {
+	private void afterSameUrl() {
+        if (sameLinkList.size() > 0) {
+            foreachSameLink(sameLinkIndex);
+        }
+//		for (int i = 0; i < mTempleSize; i++) {
+//			foreachSameLink(i);
+//		}
+	}
+
+	private void foreachSameLink(int i) {
 		String lastUrl;
-		for (int i = 0; i < mTempleSize; i++) {
-			if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
-				if (i > 0) {
-					lastUrl = urlList.get(i - 1);
-				} else {
-					lastUrl = urlList.get(0);
-				}
-				handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
-				sameUlrs = sameUlrs + "------" + urlList.get(i);
-				if (i == mTempleSize - 1) {
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
+		LogUtil.e("llllllllaaaaaaaaa11111");
+		if (sameLinkList.get(i).contains("taobao.com")) {
+            if (i > 0) {
+                lastUrl = sameLinkList.get(i - 1);
+            } else {
+                lastUrl = sameLinkList.get(0);
+            }
+			LogUtil.e("llllllllaaaaaaaaa111112222222");
+            handlerActionDelay(sameLinkList.get(i), lastUrl, 1000);
+            sameUlrs = sameUlrs + "------" + sameLinkList.get(i);
+            if (i == mTempleSize - 1) {
+				LogUtil.e("llllllllaaaaaaaaa444444");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-							sortTitle();
+                        sortTitle();
+						LogUtil.e("llllllllaaaaaaaaa555555");
+                        goNextIndex++;
+                        if (goNextIndex > pageSize) {
+                            if (index == shops.length - 1) {
+                                index = 0;
+                                return;
+                            }
+                            refreshSearch();
+                            goSearch(shops[index]);
+                        } else {
+                            sameNextPage();
 
-							goNextIndex++;
-							if (goNextIndex > pageSize) {
-								if (index == shops.length - 1) {
-									index = 0;
-									return;
-								}
-								refreshSearch();
-								goSearch(shops[index]);
-							} else {
-//								handler.post(new Runnable() {
-//									@Override
-//									public void run() {
-//									}
-//								});
+                        }
+                    }
+                },1500);
+            }
 
-								if (goNextIndex == 1) {
-									olderPageUrl = olderPageUrl + "&bcoffset=0&p4ppushleft=%2C44&s=44";
-								} else if (goNextIndex < pageSize) {
-									olderPageUrl = olderPageUrl.replace("4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex - 1], "4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex]);
-								}
-								LogUtil.e("before_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
-								loadMyUrl(olderPageUrl);
-								METHOD_AFTER_LOAD = Constant.GET_SAMEURL;
-//								METHOD_AFTER_LOAD = Constant.GO_NEXT_PAGE;
-//								loadMyUrl(olderPageUrl);
+        }
+	}
 
-							}
-						}
-					}, 3000*i+2000);
-				}
-
-			}
-		}
+	private void sameNextPage() {
+		if (goNextIndex <= 1) {
+            olderPageUrl = olderPageUrl + "&bcoffset=0&p4ppushleft=%2C44&s=44";
+        } else if (goNextIndex < pageSize) {
+            olderPageUrl = olderPageUrl.replace("4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex - 1], "4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex]);
+        }
+		LogUtil.e("before_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
+		loadMyUrl(olderPageUrl);
+		METHOD_AFTER_LOAD = Constant.GET_SAMEURL;
 	}
 
 
@@ -1109,6 +1155,10 @@ public class WA_YundaFragment extends WA_BaseFragment
 					biao1();
 					METHOD_AFTER_LOAD = -1;
 					break;
+			}
+			erreorCheck++;
+			if (erreorCheck == 2 && isErreorCheck) {
+				nextSameUrl();
 			}
 			LogUtil.e("urlIndex:!!!!!!@@@@@####$" + METHOD_AFTER_LOAD);
 

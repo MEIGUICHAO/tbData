@@ -101,13 +101,21 @@ function check(url){
     localMethod.JI_LOG("itemnames:"+itemnames.length);
     localMethod.JI_LOG("prices:"+prices.length);
     localMethod.JI_LOG("paids:"+paids.length);
+    try{
     var pay = paids[7].innerText.replace("人付款","");
+    }catch(e){
+        localMethod.afterSameResult();
+    }
     var text = url + "\n";
     var maxPrices = 0;
     var minPrices = 100000;
     var averPrices = 0;
     var averNum = 0;
     var minPricesUrl = "";
+
+
+
+
 
     if(paids.length>30&&pay>2){
         for(var i=0;i<itemnames.length;i++){
@@ -142,9 +150,10 @@ function check(url){
         localMethod.sameResultRecord(url);
         localMethod.minSameRecord(minSameRecord,minPricesUrl+"");
         localMethod.JI_LOG(minSameRecord);
-
-
     }
+    localMethod.afterSameResult();
+
+
 
 
 }
