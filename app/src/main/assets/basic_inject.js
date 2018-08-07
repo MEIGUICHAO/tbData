@@ -67,6 +67,7 @@ function relativeTitle(){
 function nextPage(){
     var btn = document.getElementsByClassName("btn J_Submit");
     btn[0].click();
+    localMethod.afterNextClick();
 }
 
 

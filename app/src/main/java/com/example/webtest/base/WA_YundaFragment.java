@@ -92,12 +92,13 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private String olderPageUrl;
 	private int debugSize = 2;
 	protected String injectJS;
-	private int METHOD_AFTER_LOAD;
+	private int METHOD_AFTER_LOAD = -1;
+	private String[] oldPageUrlStr = {"0", "44", "88", "132", "176", "220", "264", "308", "352", "392"};
 
 
 	protected void refreshSearch() {
 		mUrlList = "";
-        mMinSameUrlList = "";
+		mMinSameUrlList = "";
 		goNextIndex = 0;
 		if (!CheckAll) {
 			minUrlsRecord = "";
@@ -109,7 +110,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 			index = 0;
 		}
 
-		if (index<shops.length){
+		if (index<shops.length-1){
 			index++;
 		}
 		btn_sort_title.setText(shops[index]);
@@ -178,6 +179,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 	protected void goSearch(final String search) {
 //		handlerJs("setSearchWord(\""+search+"\",\""+randomtime+"\");");
+		goNextIndex = 0;
 		sameUlrs = "";
 		handlerJs("setSearchWord(\"" + search + "\");");
 		handler.postDelayed(new Runnable() {
@@ -586,6 +588,24 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 
 		@JavascriptInterface
+		public void afterNextClick()
+		{
+
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+
+					olderPageUrl = listWeb.getUrl();
+					LogUtil.e("after_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
+
+				}
+			});
+
+		}
+
+
+
+		@JavascriptInterface
 		public void loadRenqi()
 		{
 
@@ -595,14 +615,6 @@ public class WA_YundaFragment extends WA_BaseFragment
 					loadMyUrl(renqiUrl);
 				}
 			});
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-
-					handlerJs("relativeTitle();");
-					handlerJs("getSameStyleUrlList();");
-				}
-			}, 3000);
 		}
 
 		@JavascriptInterface
@@ -798,20 +810,20 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private void afterSameUrl(ArrayList<String> urlList) {
 		String lastUrl;
 		for (int i = 0; i < mTempleSize; i++) {
-            if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
-                if (i > 0) {
-                    lastUrl = urlList.get(i - 1);
-                } else {
-                    lastUrl = urlList.get(0);
-                }
-                handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
-                sameUlrs = sameUlrs + "------" + urlList.get(i);
-                if (i == mTempleSize - 1) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+			if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
+				if (i > 0) {
+					lastUrl = urlList.get(i - 1);
+				} else {
+					lastUrl = urlList.get(0);
+				}
+				handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
+				sameUlrs = sameUlrs + "------" + urlList.get(i);
+				if (i == mTempleSize - 1) {
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
 
-                            sortTitle();
+							sortTitle();
 
 							goNextIndex++;
 							if (goNextIndex > 8) {
@@ -822,30 +834,30 @@ public class WA_YundaFragment extends WA_BaseFragment
 								refreshSearch();
 								goSearch(shops[index]);
 							} else {
+//								handler.post(new Runnable() {
+//									@Override
+//									public void run() {
+//									}
+//								});
+
+								if (goNextIndex == 1) {
+									olderPageUrl = olderPageUrl + "&bcoffset=0&p4ppushleft=%2C44&s=44";
+								} else if (goNextIndex < 8) {
+									olderPageUrl = olderPageUrl.replace("4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex - 1], "4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex]);
+								}
 								LogUtil.e("before_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
 								loadMyUrl(olderPageUrl);
-								handler.postDelayed(new Runnable() {
-									@Override
-									public void run() {
-										goNextPage();
-										handler.postDelayed(new Runnable() {
-											@Override
-											public void run() {
+								METHOD_AFTER_LOAD = Constant.GET_SAMEURL;
+//								METHOD_AFTER_LOAD = Constant.GO_NEXT_PAGE;
+//								loadMyUrl(olderPageUrl);
 
-												olderPageUrl = listWeb.getUrl();
-												LogUtil.e("after_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
-												biao1();
-											}
-										}, 3000);
-									}
-								}, 3000);
 							}
-                        }
-                    }, 3000*i+2000);
-                }
+						}
+					}, 3000*i+2000);
+				}
 
-            }
-        }
+			}
+		}
 	}
 
 
@@ -1059,6 +1071,12 @@ public class WA_YundaFragment extends WA_BaseFragment
 	/** ListWebView加载完注入基本JS函数 */
 	public class MyListWebViewClient extends WebViewClient
 	{
+
+		@Override
+		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			return super.shouldOverrideUrlLoading(view, url);
+		}
+
 		@Override
 		public void onPageFinished(WebView view, String url)
 		{
@@ -1072,8 +1090,26 @@ public class WA_YundaFragment extends WA_BaseFragment
 					handlerJs("getTitleList();");
 					METHOD_AFTER_LOAD = Constant.RENQI_BEGIN;
 					break;
+				case Constant.RENQI_BEGIN:
+
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+
+							handlerJs("relativeTitle();");
+						}
+					});
+					METHOD_AFTER_LOAD = -1;
+					break;
+				case Constant.GO_NEXT_PAGE:
+
+					break;
+				case Constant.GET_SAMEURL:
+					biao1();
+					METHOD_AFTER_LOAD = -1;
+					break;
 			}
-			LogUtil.e("urlIndex:!!!!!!@@@@@####$");
+			LogUtil.e("urlIndex:!!!!!!@@@@@####$" + METHOD_AFTER_LOAD);
 
 			super.onPageFinished(view, url);
 		}
