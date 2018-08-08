@@ -770,7 +770,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 		{
 			LogUtil.e("length:" + array.length + "");
 //			LogUtil.e("length:" + array[0] + "");
-			urls = array;
+
+
 
 
 			getActivity().runOnUiThread(new Runnable() {
@@ -790,11 +791,28 @@ public class WA_YundaFragment extends WA_BaseFragment
 						}
 					}, 5000);
 					if (array.length < 1) {
+						List<String> templeUrlList = new ArrayList<String>();
+						String checkUrlStr = "####";
+						for (int i = 0; i <array.length; i++) {
+							String[] split = array[i].split("&nid=");
+							if (!checkUrlStr.contains(split[0])) {
+								checkUrlStr = checkUrlStr + split[i];
+								templeUrlList.add(split[0] + "&sort=sale-desc");
+							}
+
+						}
+
+						urls = new String[templeUrlList.size()];
+						for (int i = 0; i < templeUrlList.size(); i++) {
+							urls[i] = templeUrlList.get(i);
+						}
 						if (index != shops.length - 1) {
+
 							if (toastErrorOccur) {
 								goSearch(shops[index]);
 								return;
 							}
+
 							Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
 							errorToastTime++;
 							if (errorToastTime > pageSize) {

@@ -33,7 +33,6 @@ public interface Constant {
             "假领\n" +
             "拎环\n" +
             "婚纱裙撑\n" +
-            "其他\n" +
             "新娘头饰\n" +
             "婚纱手套\n" +
             "鞋撑\n" +
