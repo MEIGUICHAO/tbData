@@ -6,9 +6,11 @@ public interface Constant {
     int GO_NEXT_PAGE = 2;
     int AFTER_GO_NEXT_PAGE = 3;
     int GET_SAMEURL = 4;
-    boolean DEBUG = true;
+    boolean DEBUG = false;
     int debugSize = 1;
-    int pageSize = 2;
+    int pageSize = 3;
+    int foreaTime = 3000;
+    int foreaTime_additon_Time = 2000;
     //    String SHOP_LIST =
     String SHOP_LIST1 = "鞋垫\n" +
             "鞋带\n" +

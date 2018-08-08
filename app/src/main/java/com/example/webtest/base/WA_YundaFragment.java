@@ -96,12 +96,17 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected String injectJS;
 	private int METHOD_AFTER_LOAD = -1;
 	private String[] oldPageUrlStr = {"0", "44", "88", "132", "176", "220", "264", "308", "352", "392"};
+	private int errorToastTime;
+	private boolean toastErrorOccur;
+	private String stopIndexUrl;
 
 
 	protected void refreshSearch() {
 		mUrlList = "";
 		mMinSameUrlList = "";
 		goNextIndex = 0;
+		errorToastTime = 0;
+		toastErrorOccur = false;
 		if (!CheckAll) {
 			minUrlsRecord = "";
 		}
@@ -767,12 +772,34 @@ public class WA_YundaFragment extends WA_BaseFragment
 //			LogUtil.e("length:" + array[0] + "");
 			urls = array;
 
+
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
+
+					stopIndexUrl = listWeb.getUrl();
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (stopIndexUrl.equals(listWeb.getUrl())) {
+								refreshSearch();
+								goSearch(shops[index]);
+							}
+
+
+						}
+					}, 5000);
 					if (array.length < 1) {
 						if (index != shops.length - 1) {
+							if (toastErrorOccur) {
+								goSearch(shops[index]);
+								return;
+							}
 							Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
+							errorToastTime++;
+							if (errorToastTime > pageSize) {
+								toastErrorOccur = true;
+							}
 							if (goNextIndex > pageSize) {
 								sortTitle();
 								refreshSearch();
@@ -827,7 +854,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 				} else {
 					lastUrl = urlList.get(0);
 				}
-				handlerActionDelay(urlList.get(i), lastUrl, 3000 * i);
+				handlerActionDelay(urlList.get(i), lastUrl, Constant.foreaTime * i);
 				sameUlrs = sameUlrs + "------" + urlList.get(i);
 				if (i == mTempleSize - 1) {
 					handler.postDelayed(new Runnable() {
@@ -858,7 +885,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 							}
 						}
-					}, 3000*i+2000);
+					}, Constant.foreaTime*i+Constant.foreaTime_additon_Time);
 				}
 
 			}
