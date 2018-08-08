@@ -49,8 +49,7 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 	private int shopCount;
 	private ArrayList<String> outputTitleList;
 	private EditText et_filter;
-	private String mshop = "其他礼品节庆用品\n" +
-			"其它杂货\n" +
+	private String mshop =
 			"钥匙扣\n" +
 			"气球\n" +
 			"相册相簿\n" +
@@ -63,7 +62,6 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			"创意摆件\n" +
 			"拱门\n" +
 			"手腕花\n" +
-			"其他用品\n" +
 			"婚庆绢花\n" +
 			"创意设计玩具\n" +
 			"花瓣仿真花瓣\n" +
@@ -91,14 +89,12 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			"许愿瓶幸运星瓶\n" +
 			"风铃及配件\n" +
 			"文化创意明信片\n" +
-			"其他\n" +
 			"子孙桶\n" +
 			"手机链\n" +
 			"文化创意包袋\n" +
 			"文化创意杯垫餐垫\n" +
 			"孔明灯\n" +
 			"创意贴纸\n" +
-			"其他圣诞用品\n" +
 			"文化创意手环\n" +
 			"创意颈枕\n" +
 			"文化创意钱包购物收纳袋\n" +
@@ -147,8 +143,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		}
 		Resources res = getResources();
 //		shops = res.getStringArray(R.array.classify);
-//		shops = res.getStringArray(R.array.classify);
-		shops = mshop.split("\n");
+		shops = res.getStringArray(R.array.classify);
+//		shops = mshop.split("\n");
 	}
 
 	@Override
@@ -847,7 +843,12 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 						@Override
 						public void run() {
 
-							sortResult();
+
+							try {
+								sortResult();
+							} catch (Exception e) {
+								LogUtil.e("sp健值错误:" + e.toString());
+							}
 							keywordAndTitle();
 						}
 					}).start();

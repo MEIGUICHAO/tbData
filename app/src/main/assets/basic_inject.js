@@ -29,10 +29,8 @@ function next(){
             text = text +imgs[j].getAttribute("alt")+ salenums[j].innerText+"\n";
             localMethod.sameResultForSort(imgs[j].getAttribute("alt"),salenums[j].innerText.replace("人收货",""));
         }catch(e){
-            localMethod.JI_LOG(e);
         }
     }
-    localMethod.JI_LOG(text);
 }
 
 
@@ -98,9 +96,6 @@ function check(url){
     var prices = document.getElementsByClassName("info2__price");
     var paids = document.getElementsByClassName("info3__npaid");
     var mUrl = document.getElementsByClassName("info1__itemname");
-    localMethod.JI_LOG("itemnames:"+itemnames.length);
-    localMethod.JI_LOG("prices:"+prices.length);
-    localMethod.JI_LOG("paids:"+paids.length);
     try{
     var pay = paids[7].innerText.replace("人付款","");
     }catch(e){
@@ -132,12 +127,6 @@ function check(url){
 
                 }
 
-
-                var templeAs = mUrl[i].getElementsByTagName("a");
-                localMethod.JI_LOG("!!!!!!"+templeAs.length);
-                localMethod.JI_LOG(",innerText:"+templeAs[0].innerText+
-                                   //        ",innerHTML:"+as[i].innerHTML+
-                                           ",value:"+templeAs[0].value + ",as:"+templeAs[0]);
 
                 localMethod.titleSave(itemnames[i].innerText);
                 text = text + itemnames[i].innerText +"#####"+paids[i].innerText + "\n";
