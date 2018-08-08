@@ -77,7 +77,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected String sameUlrs = "";
 	protected ArrayList<String> titleList;
 	protected HashMap<String,Integer> titleSortMap;
-	private boolean debug = true;
+	private boolean debug = Constant.DEBUG;
 	protected String mUrlList,mMinSameUrlList;
 	private String renqiUrl;
 	private int sameUrlSize;
@@ -85,13 +85,14 @@ public class WA_YundaFragment extends WA_BaseFragment
 	protected ArrayList<String> mTempleList;
 	protected String mTempleListKeywordStr;
 	public boolean CheckAll = false;
+	public boolean isInit = true;
 	private String minUrlsRecord;
 	private int mTempleSize;
 
 	private int goNextIndex = 0;
 	private String olderPageUrl;
-	private int debugSize = 3;
-	private int pageSize = 3;
+	private int debugSize = Constant.debugSize;
+	private int pageSize = Constant.pageSize;
 	protected String injectJS;
 	private int METHOD_AFTER_LOAD = -1;
 	private String[] oldPageUrlStr = {"0", "44", "88", "132", "176", "220", "264", "308", "352", "392"};
@@ -111,8 +112,16 @@ public class WA_YundaFragment extends WA_BaseFragment
 			index = 0;
 		}
 
-		if (index<shops.length-1){
+		if (index<shops.length-1&&!isInit){
 			index++;
+		}
+
+		String mIndex = et_index.getText().toString();
+		if (!TextUtils.isEmpty(mIndex)) {
+			index = Integer.parseInt(mIndex);
+		}
+		if (isInit) {
+			isInit = false;
 		}
 		btn_sort_title.setText(shops[index]);
 		if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(getActivity(), TAOBAO, shops[index] + "linkUrl", ""))) {
@@ -123,11 +132,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 
 
-		String mIndex = et_index.getText().toString();
-		if (!TextUtils.isEmpty(mIndex)) {
-			index = Integer.parseInt(mIndex);
-		}
-		btnRefresh.setText(index + "/" + shops.length);
+		btnRefresh.setText(index + 1 + "/" + shops.length);
 
 		if (null != mTempleList) {
 			mTempleList.clear();
@@ -768,9 +773,14 @@ public class WA_YundaFragment extends WA_BaseFragment
 					if (array.length < 1) {
 						if (index != shops.length - 1) {
 							Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
-							sortTitle();
-							refreshSearch();
-							goSearch(shops[index]);
+							if (goNextIndex > pageSize) {
+								sortTitle();
+								refreshSearch();
+								LogUtil.e("779~~~~~~~~~~refreshSearch:" + shops[index]);
+								goSearch(shops[index]);
+							} else {
+								goNextRenqiPage();
+							}
 						}
 
 					}
@@ -833,6 +843,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 									return;
 								}
 								refreshSearch();
+								LogUtil.e("845~~~~~~~~~~refreshSearch:" + shops[index]);
 								goSearch(shops[index]);
 							} else {
 //								handler.post(new Runnable() {
@@ -841,14 +852,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 //									}
 //								});
 
-								if (goNextIndex == 1) {
-									olderPageUrl = olderPageUrl + "&bcoffset=0&p4ppushleft=%2C44&s=44";
-								} else if (goNextIndex < pageSize) {
-									olderPageUrl = olderPageUrl.replace("4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex - 1], "4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex]);
-								}
-								LogUtil.e("before_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
-								loadMyUrl(olderPageUrl);
-								METHOD_AFTER_LOAD = Constant.GET_SAMEURL;
+								goNextRenqiPage();
 //								METHOD_AFTER_LOAD = Constant.GO_NEXT_PAGE;
 //								loadMyUrl(olderPageUrl);
 
@@ -859,6 +863,17 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 			}
 		}
+	}
+
+	private void goNextRenqiPage() {
+		if (goNextIndex == 1 && !olderPageUrl.contains("&bcoffset=0&p4ppushleft=%2C44&s")) {
+			olderPageUrl = olderPageUrl + "&bcoffset=0&p4ppushleft=%2C44&s=44";
+		} else if (goNextIndex < pageSize && goNextIndex > 0) {
+			olderPageUrl = olderPageUrl.replace("4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex - 1], "4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex]);
+		}
+		LogUtil.e("before_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
+		loadMyUrl(olderPageUrl);
+		METHOD_AFTER_LOAD = Constant.GET_SAMEURL;
 	}
 
 

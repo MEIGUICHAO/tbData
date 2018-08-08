@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.webtest.base.Constant;
 import com.example.webtest.base.MyWebView;
 import com.example.webtest.base.WA_YundaFragment;
 import com.example.webtest.io.LogUtil;
@@ -49,71 +50,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 	private int shopCount;
 	private ArrayList<String> outputTitleList;
 	private EditText et_filter;
-	private String mshop =
-			"钥匙扣\n" +
-			"气球\n" +
-			"相册相簿\n" +
-			"储蓄罐\n" +
-			"飘空气球\n" +
-			"时尚烟灰缸\n" +
-			"音乐盒\n" +
-			"创意零钱包\n" +
-			"圣诞装饰品\n" +
-			"创意摆件\n" +
-			"拱门\n" +
-			"手腕花\n" +
-			"婚庆绢花\n" +
-			"创意设计玩具\n" +
-			"花瓣仿真花瓣\n" +
-			"创意玩偶\n" +
-			"招财猫\n" +
-			"胸花\n" +
-			"相框\n" +
-			"文化创意文具\n" +
-			"文化创意杯子\n" +
-			"文化创意邮册出版物徽章\n" +
-			"文化创意冰箱贴\n" +
-			"创意设计灯\n" +
-			"创意钥匙包\n" +
-			"荷花灯河灯\n" +
-			"文化创意化妆镜\n" +
-			"婚庆展台婚庆门亭\n" +
-			"防丢器\n" +
-			"圣诞树\n" +
-			"生日报\n" +
-			"笔筒\n" +
-			"婚庆公仔\n" +
-			"创意抱枕\n" +
-			"兔子灯\n" +
-			"圣诞礼品\n" +
-			"许愿瓶幸运星瓶\n" +
-			"风铃及配件\n" +
-			"文化创意明信片\n" +
-			"子孙桶\n" +
-			"手机链\n" +
-			"文化创意包袋\n" +
-			"文化创意杯垫餐垫\n" +
-			"孔明灯\n" +
-			"创意贴纸\n" +
-			"文化创意手环\n" +
-			"创意颈枕\n" +
-			"文化创意钱包购物收纳袋\n" +
-			"圣诞服饰\n" +
-			"创意坐垫\n" +
-			"创意陶瓷\n" +
-			"文化创意餐具\n" +
-			"圣诞帽\n" +
-			"文化衫\n" +
-			"婚庆印章\n" +
-			"南瓜灯\n" +
-			"阳光罐月光罐\n" +
-			"圣诞袜\n" +
-			"圣诞鹿\n" +
-			"创意泥人\n" +
-			"创意风筝\n" +
-			"太阳能娃娃\n" +
-			"创意根雕\n" +
-			"海螺贝壳珊瑚\n";
+	private String mshop = Constant.SHOP_LIST;
+
 
 	/**  通过静态方法实例化自动化Fragment*/
 	public static void start(Activity mContext, int containerRsID, WA_Parameters parameter)
@@ -143,8 +81,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 		}
 		Resources res = getResources();
 //		shops = res.getStringArray(R.array.classify);
-		shops = res.getStringArray(R.array.classify);
-//		shops = mshop.split("\n");
+//		shops = res.getStringArray(R.array.classify);
+		shops = mshop.split("\n");
 	}
 
 	@Override
