@@ -809,6 +809,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 						if (index != shops.length - 1) {
 
 							if (toastErrorOccur) {
+								refreshSearch();
 								goSearch(shops[index]);
 								return;
 							}
@@ -816,6 +817,9 @@ public class WA_YundaFragment extends WA_BaseFragment
 							Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
 							errorToastTime++;
 							if (errorToastTime > pageSize) {
+								toastErrorOccur = true;
+							}
+							if (!listWeb.getUrl().contains("&sort=renqi")) {
 								toastErrorOccur = true;
 							}
 							if (goNextIndex > pageSize) {
