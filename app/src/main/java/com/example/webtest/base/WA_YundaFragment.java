@@ -782,7 +782,23 @@ public class WA_YundaFragment extends WA_BaseFragment
 				@Override
 				public void run() {
 
+					LogUtil.e("同款链接之前:" + array.length);
 					stopIndexUrl = listWeb.getUrl();
+					List<String> templeUrlList = new ArrayList<String>();
+					String checkUrlStr = "####";
+					for (int i = 0; i < array.length; i++) {
+						String[] split = array[i].split("&nid=");
+						if (!checkUrlStr.contains(split[0])) {
+							checkUrlStr = checkUrlStr + split[0];
+							templeUrlList.add(split[0] + "&sort=sale-desc");
+						}
+
+					}
+					urls = new String[templeUrlList.size()];
+					for (int i = 0; i < templeUrlList.size(); i++) {
+						urls[i] = templeUrlList.get(i);
+					}
+					LogUtil.e("同款链接之后:" + urls.length);
 //					handler.postDelayed(new Runnable() {
 //						@Override
 //						public void run() {
@@ -794,22 +810,10 @@ public class WA_YundaFragment extends WA_BaseFragment
 //
 //						}
 //					}, 3000);
-					if (array.length < 1) {
-						List<String> templeUrlList = new ArrayList<String>();
-						String checkUrlStr = "####";
-						for (int i = 0; i < array.length; i++) {
-							String[] split = array[i].split("&nid=");
-							if (!checkUrlStr.contains(split[0])) {
-								checkUrlStr = checkUrlStr + split[i];
-								templeUrlList.add(split[0] + "&sort=sale-desc");
-							}
+					if (urls.length < 1) {
 
-						}
 
-						urls = new String[templeUrlList.size()];
-						for (int i = 0; i < templeUrlList.size(); i++) {
-							urls[i] = templeUrlList.get(i);
-						}
+
 						if (index != shops.length - 1) {
 
 							if (toastErrorOccur) {
