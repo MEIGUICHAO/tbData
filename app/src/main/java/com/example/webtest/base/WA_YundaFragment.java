@@ -102,12 +102,14 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private String stopIndexUrl;
 	private String nextPageRecord = "begin";
 	private String originPageUrl;
+	private String checkUrlStr;
 
 
 	protected void refreshSearch() {
 		nextPageRecord = "begin";
 		mUrlList = "";
 		mMinSameUrlList = "";
+		checkUrlStr = "####";
 		goNextIndex = 0;
 		errorToastTime = 0;
 		toastErrorOccur = false;
@@ -785,7 +787,6 @@ public class WA_YundaFragment extends WA_BaseFragment
 					LogUtil.e("同款链接之前:" + array.length);
 					stopIndexUrl = listWeb.getUrl();
 					List<String> templeUrlList = new ArrayList<String>();
-					String checkUrlStr = "####";
 					for (int i = 0; i < array.length; i++) {
 						String[] split = array[i].split("&nid=");
 						if (!checkUrlStr.contains(split[0])) {
@@ -847,7 +848,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 					} else {
 						try {
-							getSameStytleResult(array);
+							getSameStytleResult(urls);
 						} catch (Exception e) {
 
 						}
