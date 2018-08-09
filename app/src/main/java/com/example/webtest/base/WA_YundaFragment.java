@@ -21,6 +21,7 @@ import com.example.webtest.io.SharedPreferencesUtils;
 import com.example.webtest.io.WA_Parameters;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -95,13 +96,16 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private int pageSize = Constant.pageSize;
 	protected String injectJS;
 	private int METHOD_AFTER_LOAD = -1;
-	private String[] oldPageUrlStr = {"0", "44", "88", "132", "176", "220", "264", "308", "352", "392"};
+	private String[] oldPageUrlStr = { "44", "88", "132", "176", "220", "264", "308", "352", "392"};
 	private int errorToastTime;
 	private boolean toastErrorOccur;
 	private String stopIndexUrl;
+	private String nextPageRecord = "begin";
+	private String originPageUrl;
 
 
 	protected void refreshSearch() {
+		nextPageRecord = "begin";
 		mUrlList = "";
 		mMinSameUrlList = "";
 		goNextIndex = 0;
@@ -779,21 +783,21 @@ public class WA_YundaFragment extends WA_BaseFragment
 				public void run() {
 
 					stopIndexUrl = listWeb.getUrl();
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							if (stopIndexUrl.equals(listWeb.getUrl())) {
-								refreshSearch();
-								goSearch(shops[index]);
-							}
-
-
-						}
-					}, 5000);
+//					handler.postDelayed(new Runnable() {
+//						@Override
+//						public void run() {
+//							if (listWeb.getUrl().contains(getURLEncoderString(shops[index]))) {
+//								refreshSearch();
+//								goSearch(shops[index]);
+//							}
+//
+//
+//						}
+//					}, 3000);
 					if (array.length < 1) {
 						List<String> templeUrlList = new ArrayList<String>();
 						String checkUrlStr = "####";
-						for (int i = 0; i <array.length; i++) {
+						for (int i = 0; i < array.length; i++) {
 							String[] split = array[i].split("&nid=");
 							if (!checkUrlStr.contains(split[0])) {
 								checkUrlStr = checkUrlStr + split[i];
@@ -821,8 +825,9 @@ public class WA_YundaFragment extends WA_BaseFragment
 							}
 							if (!listWeb.getUrl().contains("&sort=renqi")) {
 								toastErrorOccur = true;
+								goNextIndex = 1;
 							}
-							if (goNextIndex > pageSize) {
+							if (nextPageRecord.contains("4ppushleft=%2C44&s=" + oldPageUrlStr[pageSize])) {
 								sortTitle();
 								refreshSearch();
 								LogUtil.e("779~~~~~~~~~~refreshSearch:" + shops[index]);
@@ -830,13 +835,18 @@ public class WA_YundaFragment extends WA_BaseFragment
 							} else {
 								goNextRenqiPage();
 							}
+//							if (goNextIndex > pageSize) {
+//							} else {
+////								goNextRenqiPage();
+//							}
 						}
 
-					}
-					try {
-						getSameStytleResult(array);
-					} catch (Exception e) {
+					} else {
+						try {
+							getSameStytleResult(array);
+						} catch (Exception e) {
 
+						}
 					}
 
 				}
@@ -885,27 +895,31 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 							sortTitle();
 
-							goNextIndex++;
-							if (goNextIndex > pageSize) {
-								if (index == shops.length - 1) {
-									index = 0;
-									return;
-								}
+
+							if (index == shops.length - 1) {
+								index = 0;
+								return;
+							}
+							if (nextPageRecord.contains("4ppushleft=%2C44&s=" + oldPageUrlStr[pageSize])) {
 								refreshSearch();
 								LogUtil.e("845~~~~~~~~~~refreshSearch:" + shops[index]);
 								goSearch(shops[index]);
 							} else {
-//								handler.post(new Runnable() {
-//									@Override
-//									public void run() {
-//									}
-//								});
-
 								goNextRenqiPage();
-//								METHOD_AFTER_LOAD = Constant.GO_NEXT_PAGE;
-//								loadMyUrl(olderPageUrl);
-
 							}
+//							if (goNextIndex > pageSize) {
+//							} else {
+////								handler.post(new Runnable() {
+////									@Override
+////									public void run() {
+////									}
+////								});
+//
+////								goNextRenqiPage();
+////								METHOD_AFTER_LOAD = Constant.GO_NEXT_PAGE;
+////								loadMyUrl(olderPageUrl);
+//
+//							}
 						}
 					}, Constant.foreaTime*i+Constant.foreaTime_additon_Time);
 				}
@@ -915,13 +929,22 @@ public class WA_YundaFragment extends WA_BaseFragment
 	}
 
 	private void goNextRenqiPage() {
-		if (goNextIndex == 1 && !olderPageUrl.contains("&bcoffset=0&p4ppushleft=%2C44&s")) {
-			olderPageUrl = olderPageUrl + "&bcoffset=0&p4ppushleft=%2C44&s=44";
-		} else if (goNextIndex < pageSize && goNextIndex > 0) {
-			olderPageUrl = olderPageUrl.replace("4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex - 1], "4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex]);
+		for (int i = goNextIndex; i <= pageSize; i++) {
+			if (!nextPageRecord.contains("4ppushleft=%2C44&s=" + oldPageUrlStr[i])) {
+				olderPageUrl = originPageUrl + "4ppushleft=%2C44&s=" + oldPageUrlStr[i];
+				break;
+			}
 		}
-		LogUtil.e("before_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
+//
+//		LogUtil.e("goNextIndex!!!!!!!!:" + goNextIndex);
+//		if ((goNextIndex == 1 )&& !olderPageUrl.contains("&bcoffset=0&p4ppushleft=%2C44&s")) {
+//			olderPageUrl = olderPageUrl + "&bcoffset=0&p4ppushleft=%2C44&s=44";
+//		} else if (goNextIndex < pageSize && goNextIndex > 0) {
+//			olderPageUrl = olderPageUrl.replace("4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex - 1], "4ppushleft=%2C44&s=" + oldPageUrlStr[goNextIndex]);
+//		}
+		nextPageRecord = nextPageRecord + olderPageUrl;
 		loadMyUrl(olderPageUrl);
+		goNextIndex++;
 		METHOD_AFTER_LOAD = Constant.GET_SAMEURL;
 	}
 
@@ -1146,35 +1169,13 @@ public class WA_YundaFragment extends WA_BaseFragment
 		public void onPageFinished(WebView view, String url)
 		{
 			view.loadUrl("javascript:" + injectJS);
-			switch (METHOD_AFTER_LOAD) {
-				case Constant.AFTER_SALES_DESC:
-					renqiUrl = listWeb.getUrl().replace("&sort=sale-desc", "&sort=renqi");
-					olderPageUrl = renqiUrl;
-					LogUtil.e("init_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
-
-					handlerJs("getTitleList();");
-					METHOD_AFTER_LOAD = Constant.RENQI_BEGIN;
-					break;
-				case Constant.RENQI_BEGIN:
-
-					handler.post(new Runnable() {
-						@Override
-						public void run() {
-
-							handlerJs("relativeTitle();");
-						}
-					});
-					METHOD_AFTER_LOAD = -1;
-					break;
-				case Constant.GO_NEXT_PAGE:
-
-					break;
-				case Constant.GET_SAMEURL:
-					biao1();
-					METHOD_AFTER_LOAD = -1;
-					break;
-			}
-			LogUtil.e("urlIndex:!!!!!!@@@@@####$" + METHOD_AFTER_LOAD);
+            switchMethod();
+//            handler.postDelayed(new Runnable() {
+//				@Override
+//				public void run() {
+//
+//				}
+//			}, 1000);
 
 			super.onPageFinished(view, url);
 		}
@@ -1184,6 +1185,52 @@ public class WA_YundaFragment extends WA_BaseFragment
 		{
 			super.onPageStarted(view, url, favicon);
 		}
+	}
+
+	private void switchMethod() {
+		switch (METHOD_AFTER_LOAD) {
+            case Constant.AFTER_SALES_DESC:
+                renqiUrl = listWeb.getUrl().replace("&sort=sale-desc", "&sort=renqi");
+                olderPageUrl = renqiUrl;
+                originPageUrl = renqiUrl;
+                LogUtil.e("init_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
+
+                handlerJs("getTitleList();");
+                METHOD_AFTER_LOAD = Constant.RENQI_BEGIN;
+                break;
+            case Constant.RENQI_BEGIN:
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        handlerJs("relativeTitle();");
+                    }
+                });
+                METHOD_AFTER_LOAD = -1;
+                break;
+            case Constant.GO_NEXT_PAGE:
+
+                break;
+            case Constant.GET_SAMEURL:
+                biao1();
+                METHOD_AFTER_LOAD = -1;
+                break;
+        }
+		LogUtil.e("urlIndex:!!!!!!@@@@@####$" + METHOD_AFTER_LOAD);
+	}
+
+	public String getURLEncoderString(String str) {//url编码
+		String result = "";
+		if (null == str) {
+			return "";
+		}
+		try {
+			result = java.net.URLEncoder.encode(str, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 
