@@ -167,7 +167,7 @@ function setSearchWord(shopword){
             btnSearch[0].click();
 
 
-//    localMethod.afterSearch();
+    localMethod.afterSearch();
 }
 
 

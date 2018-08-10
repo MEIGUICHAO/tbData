@@ -277,7 +277,8 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 			public void onClick(View view) {
 //				goGetChecked();
 //				saleDesc();
-				goNextPage();
+//				goNextPage();
+				foreachUrls();
 			}
 		});
 		btn_display.setOnClickListener(new View.OnClickListener() {

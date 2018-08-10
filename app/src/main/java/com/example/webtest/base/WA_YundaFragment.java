@@ -102,7 +102,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private String stopIndexUrl;
 	private String nextPageRecord = "begin";
 	private String originPageUrl;
-	private String checkUrlStr;
+	private String checkUrlStr= "####";
+	private boolean setSearchWordReady;
 
 
 	protected void refreshSearch() {
@@ -195,16 +196,21 @@ public class WA_YundaFragment extends WA_BaseFragment
 	}
 
 	protected void goSearch(final String search) {
-//		handlerJs("setSearchWord(\""+search+"\",\""+randomtime+"\");");
-		goNextIndex = 0;
+//		handlerJs("setSearchWord(\""+search+"\",\""+RENQI_BEGIN+"\");");
+        METHOD_AFTER_LOAD = Constant.AFTER_SALES_DESC;
+        goNextIndex = 0;
 		sameUlrs = "";
-		handlerJs("setSearchWord(\"" + search + "\");");
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				saleDesc();
-			}
-		}, 3000);
+		setSearchWordReady = true;
+		String urlEncoderString = getURLEncoderString(search);
+
+		String url = "https://s.taobao.com/search?q=" + urlEncoderString + "&s_from=newHeader&ssid=s5-e&search_type=item&sourceId=tb.item&sort=sale-desc";
+		olderPageUrl = url;
+		loadMyUrl(url);
+
+//		handlerJs("setSearchWord(\"" + search + "\");");
+
+//		%E8%BF%9E%E8%A1%A3%E8%A3%99
+
 	}
 
 	private void handlerJs(final String strlogic) {
@@ -233,8 +239,10 @@ public class WA_YundaFragment extends WA_BaseFragment
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				loadMyUrl(url);
-				check(lastUrl);
+				if (!setSearchWordReady) {
+					loadMyUrl(url);
+					check(lastUrl);
+				}
 				//TODO
 
 			}
@@ -596,6 +604,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 			randomtime =3000+(int)(Math.random()*2000);		//返回大于等于m小于m+n（不包括m+n）之间的随机数
 			if (index<shops.length){
 				goSearch(shops[index]);
+				LogUtil.e("setSearchWord:" + 602);
 			}
 
 		}
@@ -612,7 +621,10 @@ public class WA_YundaFragment extends WA_BaseFragment
 				@Override
 				public void run() {
 
-					olderPageUrl = listWeb.getUrl();
+					if (!listWeb.getUrl().contains("&uniqpid=")) {
+
+						olderPageUrl = listWeb.getUrl();
+					}
 					LogUtil.e("after_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
 
 				}
@@ -778,6 +790,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 //			LogUtil.e("length:" + array[0] + "");
 
 
+			setSearchWordReady = false;
 
 
 			getActivity().runOnUiThread(new Runnable() {
@@ -817,13 +830,15 @@ public class WA_YundaFragment extends WA_BaseFragment
 
 						if (index != shops.length - 1) {
 
-							if (toastErrorOccur) {
-								refreshSearch();
-								goSearch(shops[index]);
-								return;
-							}
+//							if (toastErrorOccur) {
+//								refreshSearch();
+//								goSearch(shops[index]);
+//								LogUtil.e("setSearchWord:" + 828);
+//								return;
+//							}
 
 							Toast.makeText(getActivity(), "同款链接为空", Toast.LENGTH_SHORT).show();
+
 							errorToastTime++;
 							if (errorToastTime > pageSize) {
 								toastErrorOccur = true;
@@ -835,7 +850,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 							if (nextPageRecord.contains("4ppushleft=%2C44&s=" + oldPageUrlStr[pageSize])) {
 								sortTitle();
 								refreshSearch();
-								LogUtil.e("779~~~~~~~~~~refreshSearch:" + shops[index]);
+								LogUtil.e("setSearchWord:" + 844);
 								goSearch(shops[index]);
 							} else {
 								goNextRenqiPage();
@@ -885,52 +900,47 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private void afterSameUrl(ArrayList<String> urlList) {
 		String lastUrl;
 		for (int i = 0; i < mTempleSize; i++) {
-			if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
-				if (i > 0) {
-					lastUrl = urlList.get(i - 1);
-				} else {
-					lastUrl = urlList.get(0);
-				}
-				handlerActionDelay(urlList.get(i), lastUrl, Constant.foreaTime * i);
-				sameUlrs = sameUlrs + "------" + urlList.get(i);
-				if (i == mTempleSize - 1) {
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-
-							sortTitle();
-
-
-							if (index == shops.length - 1) {
-								index = 0;
-								return;
-							}
-							if (nextPageRecord.contains("4ppushleft=%2C44&s=" + oldPageUrlStr[pageSize])) {
-								refreshSearch();
-								LogUtil.e("845~~~~~~~~~~refreshSearch:" + shops[index]);
-								goSearch(shops[index]);
-							} else {
-								goNextRenqiPage();
-							}
-//							if (goNextIndex > pageSize) {
-//							} else {
-////								handler.post(new Runnable() {
-////									@Override
-////									public void run() {
-////									}
-////								});
-//
-////								goNextRenqiPage();
-////								METHOD_AFTER_LOAD = Constant.GO_NEXT_PAGE;
-////								loadMyUrl(olderPageUrl);
-//
-//							}
-						}
-					}, Constant.foreaTime*i+Constant.foreaTime_additon_Time);
-				}
-
+			foreachSameUrl(urlList, i);
+			if (!setSearchWordReady) {
 			}
 		}
+	}
+
+	private void foreachSameUrl(ArrayList<String> urlList, int i) {
+		String lastUrl;
+		if (urlList.get(i).contains("taobao.com") && !sameUlrs.contains(urlList.get(i))) {
+            if (i > 0) {
+                lastUrl = urlList.get(i - 1);
+            } else {
+                lastUrl = urlList.get(0);
+            }
+            handlerActionDelay(urlList.get(i), lastUrl, Constant.foreaTime * i);
+            sameUlrs = sameUlrs + "------" + urlList.get(i);
+            if (i == mTempleSize - 1) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        sortTitle();
+
+
+                        if (index == shops.length - 1) {
+                            index = 0;
+                            return;
+                        }
+                        if (nextPageRecord.contains("4ppushleft=%2C44&s=" + oldPageUrlStr[pageSize])) {
+                            refreshSearch();
+							LogUtil.e("setSearchWord:" + 924);
+
+							goSearch(shops[index]);
+                        } else {
+                            goNextRenqiPage();
+                        }
+                    }
+                }, Constant.foreaTime*i+Constant.foreaTime_additon_Time);
+            }
+
+        }
 	}
 
 	private void goNextRenqiPage() {
@@ -996,6 +1006,18 @@ public class WA_YundaFragment extends WA_BaseFragment
 		}
 	}
 
+
+	public void foreachUrls() {
+		for (int i = 0; i < shops.length; i++) {
+			index = i;
+			try {
+				sortResult();
+			} catch (Exception e) {
+
+			}
+		}
+	}
+
 	public void sortResult() {
 		LogUtil.e("取sp健值：" + "\n" + TAOBAO + "-" + index + "---" + shops[index]);
 		LogUtil.e("------------resultStr------------" + "\n" + TAOBAO + "-" + index + "---" + shops[index]);
@@ -1024,15 +1046,19 @@ public class WA_YundaFragment extends WA_BaseFragment
 //				linkStr = linkStr + linkUrl[i] + "\n";
 //			}
 //		}
+		String originalMinUrl = "：------------resultStr------------" + "\n";
 		for (int i = 0; i < minUrl.length; i++) {
 			String[] url = minUrl[i].split("minPricesUrl:");
 			if (!minStr.contains(url[1])) {
 				minStr = minStr + minUrl[i] + "\n" + "-----------------------------------------------------------" + "\n";
 			}
+			originalMinUrl = originalMinUrl + url[1] + "\n";
 		}
 //		LogUtil.e("sp健值：" + str);
 //		LogUtil.e("sp健值：" + linkStr);
 		LogUtil.e("sp健值：" + minStr);
+		LogUtil.e("sp健值orginal：" + originalMinUrl);
+
 
 	}
 
@@ -1175,12 +1201,6 @@ public class WA_YundaFragment extends WA_BaseFragment
 		{
 			view.loadUrl("javascript:" + injectJS);
             switchMethod();
-//            handler.postDelayed(new Runnable() {
-//				@Override
-//				public void run() {
-//
-//				}
-//			}, 1000);
 
 			super.onPageFinished(view, url);
 		}
@@ -1195,7 +1215,8 @@ public class WA_YundaFragment extends WA_BaseFragment
 	private void switchMethod() {
 		switch (METHOD_AFTER_LOAD) {
             case Constant.AFTER_SALES_DESC:
-                renqiUrl = listWeb.getUrl().replace("&sort=sale-desc", "&sort=renqi");
+                renqiUrl = listWeb.getUrl() + "&sort=renqi";
+//                renqiUrl = listWeb.getUrl().replace("&sort=sale-desc", "&sort=renqi");
                 olderPageUrl = renqiUrl;
                 originPageUrl = renqiUrl;
                 LogUtil.e("init_urlIndex:" + goNextIndex + "olderPageUrl:" + olderPageUrl);
