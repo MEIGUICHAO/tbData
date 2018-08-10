@@ -12,7 +12,29 @@ public interface Constant {
     int foreaTime = 3000;
     int foreaTime_additon_Time = 2000;
     //    String SHOP_LIST =
-    String SHOP_LIST1 = "机械五金\n" +
+    String SHOP_LIST = "插片/胸垫\n" +
+            "搭扣\n" +
+            "吊带/背心/T恤\n" +
+            "吊袜带\n" +
+            "肚兜\n" +
+            "短袜/打底袜/丝袜/美腿袜\n" +
+            "肩带\n" +
+            "抹胸\n" +
+            "内裤\n" +
+            "乳贴\n" +
+            "睡裤/家居裤\n" +
+            "睡袍/浴袍\n" +
+            "睡裙\n" +
+            "睡衣/家居服套装\n" +
+            "睡衣上装\n" +
+            "塑身分体套装\n" +
+            "塑身连体衣\n" +
+            "塑身美体裤\n" +
+            "塑身上衣\n" +
+            "塑身腰封/腰夹\n" +
+            "文胸\n" +
+            "文胸套装\n";
+    String SHOP_LIST4 = "机械五金\n" +
             "电动工具\n" +
             "水泵\n" +
             "仪表仪器\n" +
@@ -674,7 +696,7 @@ public interface Constant {
             "棉纱手套\n" +
             "医用口罩\n";
     //31
-    String SHOP_LIST = "建构拼插积木\n" +
+    String SHOP_LIST1 = "建构拼插积木\n" +
             "过家家玩具\n" +
             "电动遥控车\n" +
             "拼图拼板\n" +

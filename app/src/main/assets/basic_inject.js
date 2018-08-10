@@ -97,7 +97,7 @@ function check(url){
     var paids = document.getElementsByClassName("info3__npaid");
     var mUrl = document.getElementsByClassName("info1__itemname");
     try{
-    var pay = paids[7].innerText.replace("人付款","");
+    var pay = paids[10].innerText.replace("人付款","");
     }catch(e){
         localMethod.afterSameResult();
     }
@@ -112,7 +112,7 @@ function check(url){
 
 
 
-    if(paids.length>30&&pay>2){
+    if(paids.length>40&&pay>3){
         for(var i=0;i<itemnames.length;i++){
             if(paids[i].innerText.replace("人付款","")>10){
                 var price = prices[i].innerText.replace("￥","");

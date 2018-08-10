@@ -1037,6 +1037,11 @@ public class WA_YundaFragment extends WA_BaseFragment
 		String str = "------------resultStr------------" + "\n";
 		String linkStr = "------------resultStr------------" + "\n";
 		String minStr = "------------resultStr------------" + "\n";
+		String minStr1 = "------------resultStr------------" + "\n";
+		String minStr2 = "------------resultStr------------" + "\n";
+		String minStr3 = "------------resultStr------------" + "\n";
+		String minStr4 = "------------resultStr------------" + "\n";
+		String minStr5 = "------------resultStr------------" + "\n";
 		for (int i = 0; i < split.length; i++) {
 			titleList.add(split[i]);
 			str = str + split[i]+ "\n";
@@ -1051,12 +1056,35 @@ public class WA_YundaFragment extends WA_BaseFragment
 			String[] url = minUrl[i].split("minPricesUrl:");
 			if (!minStr.contains(url[1])) {
 				minStr = minStr + minUrl[i] + "\n" + "-----------------------------------------------------------" + "\n";
+				if (i < 20) {
+					minStr1 = minStr1 + minUrl[i] + "\n" + "-----------------------------------------------------------" + "\n";
+				} else if (i >= 20&&i < 40) {
+					minStr2 = minStr2 + minUrl[i] + "\n" + "-----------------------------------------------------------" + "\n";
+				} else if (i >= 40&&i < 60) {
+					minStr3 = minStr3 + minUrl[i] + "\n" + "-----------------------------------------------------------" + "\n";
+				} else if (i >= 60&&i < 80) {
+					minStr4 = minStr4 + minUrl[i] + "\n" + "-----------------------------------------------------------" + "\n";
+				} else if (i >= 80&&i < 100) {
+					minStr5 = minStr5 + minUrl[i] + "\n" + "-----------------------------------------------------------" + "\n";
+				}
+				originalMinUrl = originalMinUrl + url[1] + "\n";
 			}
-			originalMinUrl = originalMinUrl + url[1] + "\n";
 		}
 //		LogUtil.e("sp健值：" + str);
 //		LogUtil.e("sp健值：" + linkStr);
-		LogUtil.e("sp健值：" + minStr);
+		LogUtil.e( "sp健值1：" + minStr1);
+		if (!minStr2.equals("------------resultStr------------" + "\n")) {
+			LogUtil.e( "sp健值2：" + minStr2);
+		}
+		if (!minStr3.equals("------------resultStr------------" + "\n")) {
+			LogUtil.e( "sp健值3：" + minStr3);
+		}
+		if (!minStr4.equals("------------resultStr------------" + "\n")) {
+			LogUtil.e( "sp健值4：" + minStr4);
+		}
+		if (!minStr5.equals("------------resultStr------------" + "\n")) {
+			LogUtil.e( "sp健值5：" + minStr5);
+		}
 		LogUtil.e("sp健值orginal：" + originalMinUrl);
 
 

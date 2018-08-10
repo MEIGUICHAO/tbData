@@ -7,7 +7,7 @@ public class LogUtil {
 
     //可以全局控制是否打印log日志
     private static boolean isPrintLog = true;
-    private static int LOG_MAXLENGTH = 200000;
+    private static int LOG_MAXLENGTH = 9000000;
 
 
     public static void v(String msg) {
@@ -98,6 +98,8 @@ public class LogUtil {
     }
 
     public static void e(String msg) {
+
+
         if (isPrintLog) {
             int strLength = msg.length();
             int start = 0;
@@ -116,24 +118,17 @@ public class LogUtil {
     }
 
 
-    public static void showLogCompletion(String log,int showCount) {
-        if (log.length() > showCount) {
-            String show = log.substring(0, showCount);
-//			System.out.println(show);
-            Log.i("TAG", show + "");
-            if ((log.length() - showCount) > showCount) {//剩下的文本还是大于规定长度
-                String partLog = log.substring(showCount, log.length());
-                showLogCompletion(partLog, showCount);
-            } else {
-                String surplusLog = log.substring(showCount, log.length());
-//				System.out.println(surplusLog);
-                Log.i("TAG", surplusLog + "");
-            }
+    public static void showLogCompletion(String tag,String msg) {
 
-        } else {
-//			System.out.println(log);
-            Log.i("TAG", log + "");
+        //  把4*1024的MAX字节打印长度改为2001字符数
+        int max_str_length = 2001 - tag.length();
+        //大于4000时
+        while (msg.length() > max_str_length) {
+            Log.i(tag, msg.substring(0, max_str_length));
+            msg = msg.substring(max_str_length);
         }
+        //剩余部分
+        Log.e(tag, msg);
     }
 
 
