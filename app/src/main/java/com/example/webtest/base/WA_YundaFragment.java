@@ -1051,7 +1051,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 //				linkStr = linkStr + linkUrl[i] + "\n";
 //			}
 //		}
-		String originalMinUrl = "：------------resultStr------------" + "\n";
+		String originalMinUrl = "：------------orginal------------" + "\n";
 		for (int i = 0; i < minUrl.length; i++) {
 			String[] url = minUrl[i].split("minPricesUrl:");
 			if (!minStr.contains(url[1])) {
@@ -1085,7 +1085,7 @@ public class WA_YundaFragment extends WA_BaseFragment
 		if (!minStr5.equals("------------resultStr------------" + "\n")) {
 			LogUtil.e( "sp健值5：" + minStr5);
 		}
-		LogUtil.e("sp健值orginal：" + originalMinUrl);
+		LogUtil.e("orginalUrl","orginalUrl～～～～～～～：" + originalMinUrl);
 
 
 	}

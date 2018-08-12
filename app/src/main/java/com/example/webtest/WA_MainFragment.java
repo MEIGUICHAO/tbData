@@ -50,7 +50,7 @@ public class WA_MainFragment extends WA_YundaFragment implements View.OnClickLis
 	private int shopCount;
 	private ArrayList<String> outputTitleList;
 	private EditText et_filter;
-	private String mshop = Constant.SHOP_LIST;
+	private String mshop = Constant.SHOP_LIST123;
 
 
 	/**  通过静态方法实例化自动化Fragment*/
